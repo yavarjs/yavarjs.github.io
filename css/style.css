@@ -128,7 +128,7 @@ nav.navigation {
   background: #fff;
   background: rgba(255, 255, 255, 0.9);
   margin: 0 auto;
-  text-align: left;
+  text-align: right;
   z-index: 100;
 }
 
@@ -156,7 +156,7 @@ nav.navigation a.button {
     background: #fff;
     background: rgba(255, 255, 255, 0.9);
     margin: 0 auto;
-    text-align: left;
+    text-align: right;
     z-index: 100;
   }
   nav.navigation a {
