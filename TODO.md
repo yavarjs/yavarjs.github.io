@@ -1,1 +1,6 @@
 - [ ] Add HTML keywords meta tag in pages
+- [ ] Add Google analytics
+- [ ] Add comment section
+- [ ] Add contribute section
+- [ ] Add social section
+- [ ] Add README.md
