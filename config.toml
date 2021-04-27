@@ -1,7 +1,8 @@
 baseURL = "http://example.org/"
 languageCode = "fa"
-title = "var یا"
+title = "varیا"
 theme= "mini"
 
 [params]
+    description = " وبلاگی برای جاوااسکریپت و نود ‌جی‌اس"
     bio = " وبلاگی برای جاوااسکریپت و نود ‌جی‌اس"
