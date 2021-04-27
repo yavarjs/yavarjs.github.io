@@ -1,3 +1,7 @@
+# Posts
+- [ ] Add this post: https://virgool.io/@mahdavipanah/typeof-null-vdgnyfdakrob
+
+# Project
 - [ ] Add HTML keywords meta tag in pages
 - [ ] Add Google analytics
 - [ ] Add comment section
