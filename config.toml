@@ -1,0 +1,7 @@
+baseURL = "http://example.org/"
+languageCode = "fa"
+title = "var یا"
+theme= "mini"
+
+[params]
+    bio = " وبلاگی برای جاوااسکریپت و نود ‌جی‌اس"
