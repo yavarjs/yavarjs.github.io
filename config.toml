@@ -1,8 +1,9 @@
 baseURL = "http://example.org/"
 languageCode = "fa"
-title = "varیا"
+title = "یاvar"
 theme= "mini"
 
 [params]
     description = " وبلاگی برای جاوااسکریپت و نود ‌جی‌اس"
     bio = " وبلاگی برای جاوااسکریپت و نود ‌جی‌اس"
+    copyright = "مطالب با اشاره به یاvar به عنوان منبع قابل انتشارن."
