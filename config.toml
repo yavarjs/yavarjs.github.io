@@ -19,5 +19,6 @@ googleAnalytics = "G-BYW2J0N60J"
     newerPosts = "پست‌های جدیدتر"
     title404 = "۴۰۴ - صفحه پیدا نشد"
     subtitle404 = "چیزی که دنبالش می‌گردید به نظر نمیاد وجود داشته باشه."
-    
-    enableGoogleAnalytics= true
+
+    enableGoogleAnalytics = true
+    enableComments = true
