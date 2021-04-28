@@ -22,3 +22,7 @@ googleAnalytics = "G-BYW2J0N60J"
 
     enableGoogleAnalytics = true
     enableComments = true
+
+[markup]
+    [markup.highlight]
+        style = "github"
