@@ -3,13 +3,15 @@ languageCode = "fa"
 title = "یاvar"
 theme= "mini"
 
+[taxonomies]
+    tag = "tags"
+
 [params]
     description = " وبلاگی برای جاوااسکریپت و نود ‌جی‌اس"
     bio = " وبلاگی برای جاوااسکریپت و نود ‌جی‌اس"
     copyright = "مطالب با اشاره به یاvar به عنوان منبع قابل انتشارن."
     home = "خانه"
-    archive = "آرشیو"
-    tags = "دسته‌بندی‌ها"
+    tags = "برچسب‌ها"
     about = "درباره یاvar"
     olderPosts = "پست‌های قدیمی‌تر"
     newerPosts = "پست‌های جدیدتر"

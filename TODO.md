@@ -7,7 +7,6 @@
 - [ ] Add comment section with https://utteranc.es/
 - [ ] Add social section
 - [ ] Add shamsi
-- [ ] Add author info for posts
-- [ ] Add virgool link
+- [x] Add author info for posts
 - [ ] Add README.md
 - [x] Create custom domain "yavarjs.ir"
