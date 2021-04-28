@@ -279,7 +279,7 @@ nav.navigation a.button {
 #list-page .date {
   width: 20%;
   float: left;
-  text-align: right;
+  text-align: left;
   position: relative;
   top: 1px;
   color: #bbb;
@@ -288,6 +288,7 @@ nav.navigation a.button {
 #list-page .summary {
   color: #757575;
   margin-top: 12px;
+  text-align: justify;
 }
 
 #list-page .cover {
@@ -352,6 +353,7 @@ nav.navigation a.button {
 
 #single .content {
   margin-top: 36px;
+  text-align: justify;
 }
 
 #single .tags {
