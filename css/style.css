@@ -102,6 +102,7 @@ h4:hover a {
 }
 
 .highlight {
+  direction: ltr;
   max-width: 100%;
   overflow-x: auto;
 }
@@ -277,7 +278,7 @@ nav.navigation a.button {
 
 #list-page .date {
   width: 20%;
-  float: right;
+  float: left;
   text-align: right;
   position: relative;
   top: 1px;
@@ -400,6 +401,7 @@ nav.navigation a.button {
 }
 #archive .group .value .title a {
   color:#404040;
+  float: right;
 }
 #archive .group .value .title a:hover {
   color: #0366d6;
@@ -492,7 +494,7 @@ nav.navigation a.button {
 
 #page-404 .date {
   width: 20%;
-  float: right;
+  float: left;
   text-align: right;
   position: relative;
   top: 1px;
