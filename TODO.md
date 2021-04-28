@@ -1,5 +1,5 @@
 # Posts
-- [ ] Add this post: https://virgool.io/@mahdavipanah/typeof-null-vdgnyfdakrob
+- [x] Add this post: https://virgool.io/@mahdavipanah/typeof-null-vdgnyfdakrob
 
 # Project
 - [x] Add HTML keywords meta tag in pages
