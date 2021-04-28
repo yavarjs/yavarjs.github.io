@@ -3,7 +3,7 @@
 
 # Project
 - [x] Add HTML keywords meta tag in pages
-- [ ] Add Google analytics
+- [x] Add Google analytics
 - [ ] Add comment section with https://utteranc.es/
 - [ ] Add social section
 - [x] Add shamsi
