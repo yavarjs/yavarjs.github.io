@@ -10,3 +10,4 @@
 - [x] Add author info for posts
 - [ ] Add README.md
 - [x] Create custom domain "yavarjs.ir"
+- [ ] Make archive page
