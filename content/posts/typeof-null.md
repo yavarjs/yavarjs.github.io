@@ -1,11 +1,12 @@
 +++
-title = " تاریخچه typeof null در جاوااسکریپت"
+title = "تاریخچه typeof null در جاوااسکریپت"
 author = "حمیدرضا مهدوی پناه"
-tags = ["جاوااسکریپت", "null", "typeof", "در اعماق"]
-keywords = ["js", "javascript"]
+tags = ["javascript", "null", "typeof", "در اعماق"]
+keywords = ["js", "جاوااسکریپت"]
 year = "۱۴۰۰"
 month = "۲"
 day = "۱" 
+date = "2021-04-21"
 draft =  false
 +++
 

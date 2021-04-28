@@ -5,7 +5,8 @@ tags = []
 keywords = []
 year = ""
 month = ""
-day = "" 
+day = ""
+date = ""
 draft =  true
 +++
 
