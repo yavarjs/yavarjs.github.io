@@ -1,0 +1,235 @@
+<!doctype html><html dir=rtl lang=fa><head><title>انواع loop برای آرایه‌ها: for و for-in و ()forEach. و for-of | یاvar</title><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><meta name=viewport content="width=device-width,minimum-scale=1"><meta name=description content="خروجی
+‍‍‍‍typeof null
+توی جاوااسکریپت برابر میشه با
+&#34;object&#34;
+که به نادرستی این معنی رو منتقل میکنه که
+null
+یه آبجکت (شیء) هست (در صورتی که نیست.
+null
+یه
+primitive value
+یا مقدار اولیه هست). این یه باگه و چون کدهای فعلی از کار می‌افتن نمیشه رفعش کرد."><meta name=generator content="Hugo 0.82.1"><meta name=ROBOTS content="NOINDEX, NOFOLLOW"><meta name=author content="حمیدرضا مهدوی پناه"><meta name=keywords content="js,جاوااسکریپت,javascript,null,typeof,در اعماق"><link href=https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v28.0.0/dist/font-face.css rel=stylesheet type=text/css><link rel=stylesheet href=/css/style.css><script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','G-TB5X9PJPXB','auto'),ga('send','pageview'))</script><script async src=https://www.google-analytics.com/analytics.js></script></head><body><nav class=navigation><a href=/>خانه <span class=arrow>→</span></a>
+<a href=/tags>برچسب‌ها</a>
+<a href=/about>درباره یاvar</a></nav><main class=main><section id=single><h1 class=title>انواع loop برای آرایه‌ها: for و for-in و ()forEach. و for-of</h1><div class=tip><span>حمیدرضا مهدوی پناه</span>
+<span class=split>·</span>
+<span>خواندن 5 دقیقه</span>
+<span class=split>·</span>
+<span>1017 کلمه</span>
+<span class=split>·</span>
+<span>۱۴۰۰/۲/۹</span></div><div class=content><p>در این نوشته چهار روش مختلف برای استفاده از حلقه‌ها روی آرایه‌ها رو مقایسه می‌کنیم.</p><ul><li>حلقه‌ی for:</li></ul><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000;font-weight:700>for</span> (<span style=color:#000;font-weight:700>let</span> index<span style=color:#000;font-weight:700>=</span><span style=color:#099>0</span>; index <span style=color:#000;font-weight:700>&lt;</span> someArray.length; index<span style=color:#000;font-weight:700>++</span>) {
+  <span style=color:#000;font-weight:700>const</span> elem <span style=color:#000;font-weight:700>=</span> someArray[index];
+  <span style=color:#998;font-style:italic>// ···
+</span><span style=color:#998;font-style:italic></span>}
+</code></pre></div><ul><li>حلقه‌ی for-in:</li></ul><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000;font-weight:700>for</span> (<span style=color:#000;font-weight:700>const</span> key <span style=color:#000;font-weight:700>in</span> someArray) {
+  console.log(key);
+}
+</code></pre></div><ul><li>متد
+()forEach.
+از کلاس
+Array:</li></ul><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js>someArray.forEach((elem, index) =&gt; {
+  console.log(elem, index);
+});
+</code></pre></div><ul><li>حلقه‌ی for-of:</li></ul><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000;font-weight:700>for</span> (<span style=color:#000;font-weight:700>const</span> elem <span style=color:#000;font-weight:700>of</span> someArray) {
+  console.log(elem);
+}
+</code></pre></div><p>for-of
+در اغلب موارد بهترین انتخابه. در ادامه میبینم چرا.</p><hr><h2 id=فهرست-مطالب>فهرست مطالب <a href=#%d9%81%d9%87%d8%b1%d8%b3%d8%aa-%d9%85%d8%b7%d8%a7%d9%84%d8%a8 class=anchor>🔗</a></h2><ul><li><a href=#for-loop>۱ - حلقه‌ی for [جاوااسکریپت ES1]</a></li><li><a href=#for-in-loop>۲ - حلقه‌ی for-in [جاوااسکریپت ES1]</a></li><li><a href=#for-each-loop>۳ - متد ()forEach. [جاوااسکریپت ES5]</a><ul><li><a href=#for-each-loop-workaround>۱.۳ - خارج شدن از ()forEach. - یه راه حل</a></li></ul></li><li><a href=#for-of-loop>۴ - حلقه‌ی for-if [جاوااسکریپت ES6]</a><ul><li><a href=#for-of-loop-objects>۱.۴ - حلقه‌ی for-of و آبجکت‌های iterable</a></li><li><a href=#for-of-loop-indices>۲.۴ - حلقه‌ی for-of و اندیس‌های آرایه</a></li><li><a href=#for-of-loop-entries>۳.۴ - حلقه‌ی for-of و دسترسی همزمان به مقادیر و اندیس‌ها با ()entries.</a></li></ul></li><li><a href=#conclusion>۵ - نتیجه‌گیری</a></li></ul><hr><h2 id=for-loop>۱ - حلقه‌ی for [جاوااسکریپت ES1] <a href=#for-loop class=anchor>🔗</a></h2><p>حلقه‌ی ساده
+for
+در جاوااسکریپت قدمت داره و از نسخه‌ی ۱
+ECMAScript
+وجود داشته.
+حلقه زیر اندیس و مقدار هر عنصر آرایه
+<em>arr</em>
+رو چاپ میکنه:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000;font-weight:700>const</span> arr <span style=color:#000;font-weight:700>=</span> [<span style=color:#d14>&#39;a&#39;</span>, <span style=color:#d14>&#39;b&#39;</span>, <span style=color:#d14>&#39;c&#39;</span>];
+arr.prop <span style=color:#000;font-weight:700>=</span> <span style=color:#d14>&#39;property value&#39;</span>;
+
+<span style=color:#000;font-weight:700>for</span> (<span style=color:#000;font-weight:700>let</span> index<span style=color:#000;font-weight:700>=</span><span style=color:#099>0</span>; index <span style=color:#000;font-weight:700>&lt;</span> arr.length; index<span style=color:#000;font-weight:700>++</span>) {
+  <span style=color:#000;font-weight:700>const</span> elem <span style=color:#000;font-weight:700>=</span> arr[index];
+  console.log(index, elem);
+}
+
+<span style=color:#998;font-style:italic>// Output:
+</span><span style=color:#998;font-style:italic>// 0, &#39;a&#39;
+</span><span style=color:#998;font-style:italic>// 1, &#39;b&#39;
+</span><span style=color:#998;font-style:italic>// 2, &#39;c&#39;
+</span></code></pre></div><p>نقاط مثبت و منفی این حلقه چیه؟</p><ul><li>کاملا همه‌کارس اما از طرفی وقتی فقط میخوایم روی آرایه حلقه بزنیم، نوشتنش طولانی و پرجزئیاته.</li><li>اگه نمیخوایم از اولین عنصر آرایه شروع کنیم، این حلقه خیلی بدردبخوره. هیچکدوم از روش‌های دیگه این امکان رو بهمون نمیدن.</li></ul><h2 id=for-in-loop>۲ - حلقه‌ی for-in [جاوااسکریپت ES1] <a href=#for-in-loop class=anchor>🔗</a></h2><p>حلقه‌ی
+for-in
+به اندازه‌ی حلقه‌ی
+for
+قدمت داره. حلقه‌ی زیر کلید‌های آرایه‌ی
+<em>arr</em>
+رو چاپ میکنه:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000;font-weight:700>const</span> arr <span style=color:#000;font-weight:700>=</span> [<span style=color:#d14>&#39;a&#39;</span>, <span style=color:#d14>&#39;b&#39;</span>, <span style=color:#d14>&#39;c&#39;</span>];
+arr.prop <span style=color:#000;font-weight:700>=</span> <span style=color:#d14>&#39;property value&#39;</span>;
+
+<span style=color:#000;font-weight:700>for</span> (<span style=color:#000;font-weight:700>const</span> key <span style=color:#000;font-weight:700>in</span> arr) {
+  console.log(key);
+}
+
+<span style=color:#998;font-style:italic>// Output:
+</span><span style=color:#998;font-style:italic>// &#39;0&#39;
+</span><span style=color:#998;font-style:italic>// &#39;1&#39;
+</span><span style=color:#998;font-style:italic>// &#39;2&#39;
+</span><span style=color:#998;font-style:italic>// &#39;prop&#39;
+</span></code></pre></div><p>for-in
+انتخاب خوبی برای حلقه‌زدن روی آرایه‌های نیست، چون:</p><ul><li>کلیدهای
+property
+رو مرور میکنه و نه مقادیر رو.</li><li>اندیس‌های آرایه وقتی به صورت کلید‌های
+property
+دیده‌میشن، به جای این که عدد باشن، از جنس
+string
+هستن.
+(<a href=https://exploringjs.com/impatient-js/ch_arrays.html#array-indices target=_blank rel=noopener>
+اطلاعات بیشتر درمورد نحوه کار عناصر آرایه‌ها
+</a>)</li><li>به جای اندیس عناصر آرایه، تمام کلید‌های
+property
+که قابل شمارش هستن
+(enumerable)
+رو مرور میکنه (هم اونایی که مال خود آرایه هستن و هم اونایی که به ارث رسیدن).</li></ul><p>این ویژگی
+for-in
+که تمام
+propertyهای
+به ارث‌رسیده رو مرور میکنه یه جا کاربرد داره: زمانی که میخوایم روی
+propertyهای
+قابل شمارش یه
+object
+حلقه بزنیم. اما حتی در اون مورد هم حلقه زدن روی زنجیره
+prototype
+به شکل دستی بهتره، چون کنترل بیشتری در اختیارمون میذاره.</p><h2 id=for-each-loop>۳ - متد ()forEach. [جاوااسکریپت ES5] <a href=#for-each-loop class=anchor>🔗</a></h2><p>با توجه به این که نه حلقه‌ی
+for
+و نه حلقه‌ی
+for-in
+انتخاب‌های خوبی برای حلقه‌زدن روی آرایه‌ها نیستن، یه متد کمکی در
+ECMAScript 5
+معرفی شد:
+()Array.prototype.forEach:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000;font-weight:700>const</span> arr <span style=color:#000;font-weight:700>=</span> [<span style=color:#d14>&#39;a&#39;</span>, <span style=color:#d14>&#39;b&#39;</span>, <span style=color:#d14>&#39;c&#39;</span>];
+arr.prop <span style=color:#000;font-weight:700>=</span> <span style=color:#d14>&#39;property value&#39;</span>;
+
+arr.forEach((elem, index) =&gt; {
+  console.log(elem, index);
+});
+
+<span style=color:#998;font-style:italic>// Output:
+</span><span style=color:#998;font-style:italic>// &#39;a&#39;, 0
+</span><span style=color:#998;font-style:italic>// &#39;b&#39;, 1
+</span><span style=color:#998;font-style:italic>// &#39;c&#39;, 2
+</span></code></pre></div><p>این متد خیلی راحته: بدون نیاز به انجام کار زیاد ، هم دسترسی به اندیس و هم به عناصر آرایه رو میده. تابع‌های فِلشی
+(Arrow functions)
+که در
+ES6
+معرفی شدن، این متد رو از قبل هم زیباترش کرده.</p><p>معایب اصلی
+<em>()forEach.</em>
+از این قراره:</p><ul><li>امکان استفاده از
+<em>await</em>
+در «بدنه» این نوع حلقه وجود نداره.</li><li>از حلقه‌ی
+<em>()forEach.</em>
+نمیشه زودتر از موعد خارج شده. درصورتیکه در حلقه‌های
+<em>for</em>
+میشه از
+<em>break</em>
+استفاده کرد.</li></ul><h3 id=for-each-loop-workaround>۱.۳ - خارج شدن از ()forEach. - یه راه حل <a href=#for-each-loop-workaround class=anchor>🔗</a></h3><p>یه راه حل برای خارج شدن از این حلقه هست: استفاده از
+<em>()some.</em>
+که روی تمام عناصر آرایه حلقه میزنه و زمانی که تابع
+callback
+یه مقدار
+truthy
+(یه مقداری که بشه به معنی true تفسیرش کرد)
+رو برگردونه، متوقف میشه.</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000;font-weight:700>const</span> arr <span style=color:#000;font-weight:700>=</span> [<span style=color:#d14>&#39;red&#39;</span>, <span style=color:#d14>&#39;green&#39;</span>, <span style=color:#d14>&#39;blue&#39;</span>];
+arr.some((elem, index) =&gt; {
+  <span style=color:#000;font-weight:700>if</span> (index <span style=color:#000;font-weight:700>&gt;=</span> <span style=color:#099>2</span>) {
+    <span style=color:#000;font-weight:700>return</span> <span style=color:#000;font-weight:700>true</span>; <span style=color:#998;font-style:italic>// از حلقه خارج میشه
+</span><span style=color:#998;font-style:italic></span>  }
+  console.log(elem);
+  <span style=color:#998;font-style:italic>// رو برمیگردونه undefined تابع به طور ضمنی مقدار
+</span><span style=color:#998;font-style:italic></span>  <span style=color:#998;font-style:italic>// هست حلقه ادامه پیدا میکنه falsy که چون یه مقدار
+</span><span style=color:#998;font-style:italic></span>});
+
+<span style=color:#998;font-style:italic>// Output:
+</span><span style=color:#998;font-style:italic>// &#39;red&#39;
+</span><span style=color:#998;font-style:italic>// &#39;green&#39;
+</span></code></pre></div><h2 id=for-of-loop>۴ - حلقه‌ی for-of [جاوااسکریپت ES6] <a href=#for-of-loop class=anchor>🔗</a></h2><p>این حلقه در
+ECMAScript 6
+اضافه شد:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000;font-weight:700>const</span> arr <span style=color:#000;font-weight:700>=</span> [<span style=color:#d14>&#39;a&#39;</span>, <span style=color:#d14>&#39;b&#39;</span>, <span style=color:#d14>&#39;c&#39;</span>];
+arr.prop <span style=color:#000;font-weight:700>=</span> <span style=color:#d14>&#39;property value&#39;</span>;
+
+<span style=color:#000;font-weight:700>for</span> (<span style=color:#000;font-weight:700>const</span> elem <span style=color:#000;font-weight:700>of</span> arr) {
+  console.log(elem);
+}
+<span style=color:#998;font-style:italic>// Output:
+</span><span style=color:#998;font-style:italic>// &#39;a&#39;
+</span><span style=color:#998;font-style:italic>// &#39;b&#39;
+</span><span style=color:#998;font-style:italic>// &#39;c&#39;
+</span></code></pre></div><p>for-of
+برای حلقه زدن روی آرایه‌ها خیلی خوبه، چون:</p><ul><li>روی عناصر آرایه تکرار میشه.</li><li>داخلش میتونیم از
+<em>await</em>
+استفاده کنیم.<ul><li>و اگه نیاز پیدا کنیم خیلی راحت میتونیم به
+for-await-of
+کوچ کنیم.</li></ul></li><li>میتونیم از
+<em>break</em>
+و
+<em>continue</em>
+استفاده کنیم - حتی در اسکوپ
+(scope)
+های بیرونی‌تر.</li></ul><h3 id=for-of-loop-objects>۱.۴ - حلقه‌ی for-of و آبجکت‌های iterable <a href=#for-of-loop-objects class=anchor>🔗</a></h3><p>یه مزیت اضافه‌ی
+for-of
+اینه که با اون نه فقط روی آرایه‌ها بلکه روی آبجکت‌های
+iterable
+هم میشه حلقه زد - برای مثال، روی
+Mapها:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000;font-weight:700>const</span> myMap <span style=color:#000;font-weight:700>=</span> <span style=color:#000;font-weight:700>new</span> Map()
+  .set(<span style=color:#000;font-weight:700>false</span>, <span style=color:#d14>&#39;no&#39;</span>)
+  .set(<span style=color:#000;font-weight:700>true</span>, <span style=color:#d14>&#39;yes&#39;</span>)
+;
+<span style=color:#000;font-weight:700>for</span> (<span style=color:#000;font-weight:700>const</span> [key, value] <span style=color:#000;font-weight:700>of</span> myMap) {
+  console.log(key, value);
+}
+
+<span style=color:#998;font-style:italic>// Output:
+</span><span style=color:#998;font-style:italic>// false, &#39;no&#39;
+</span><span style=color:#998;font-style:italic>// true, &#39;yes&#39;
+</span></code></pre></div><p>حلقه زدن روی
+<em>myMap</em>
+جفت
+[key, value]
+رو برمیگردونه که در کد بالا از روش
+<a href=https://exploringjs.com/impatient-js/ch_destructuring.html target=_blank rel=noopener>destructre کردن</a>
+برای دسترسی مستقیم به مقادیر این جفت استفاده کردیم.</p><h3 id=for-of-loop-indices>۲.۴ - حلقه‌ی for-of و اندیس‌های آرایه <a href=#for-of-loop-indices class=anchor>🔗</a></h3><p>متد
+()keys.
+در آرایه‌ها، یه
+iterable
+روی اندیس‌های آرایه رو برمیگردونه:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000;font-weight:700>const</span> arr <span style=color:#000;font-weight:700>=</span> [<span style=color:#d14>&#39;chocolate&#39;</span>, <span style=color:#d14>&#39;vanilla&#39;</span>, <span style=color:#d14>&#39;strawberry&#39;</span>];
+
+<span style=color:#000;font-weight:700>for</span> (<span style=color:#000;font-weight:700>const</span> index <span style=color:#000;font-weight:700>of</span> arr.keys()) {
+  console.log(index);
+}
+<span style=color:#998;font-style:italic>// Output:
+</span><span style=color:#998;font-style:italic>// 0
+</span><span style=color:#998;font-style:italic>// 1
+</span><span style=color:#998;font-style:italic>// 2
+</span></code></pre></div><h3 id=for-of-loop-entries>۳.۴ - حلقه‌ی for-of و دسترسی همزمان به مقادیر و اندیس‌ها با ()entries. <a href=#for-of-loop-entries class=anchor>🔗</a></h3><p>متد
+.entries()
+در آرایه‌ها یه
+iterable
+روی جفت‌های
+[index, value]
+برمیگردونه. با استفاده از
+for-of
+و
+destructuring
+خیلی راحت میتونیم روی مقادیر و اندیس‌های آرایه به طور همزمان حلقه بزنیم:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000;font-weight:700>const</span> arr <span style=color:#000;font-weight:700>=</span> [<span style=color:#d14>&#39;chocolate&#39;</span>, <span style=color:#d14>&#39;vanilla&#39;</span>, <span style=color:#d14>&#39;strawberry&#39;</span>];
+
+<span style=color:#000;font-weight:700>for</span> (<span style=color:#000;font-weight:700>const</span> [index, value] <span style=color:#000;font-weight:700>of</span> arr.entries()) {
+  console.log(index, value);
+}
+<span style=color:#998;font-style:italic>// Output:
+</span><span style=color:#998;font-style:italic>// 0, &#39;chocolate&#39;
+</span><span style=color:#998;font-style:italic>// 1, &#39;vanilla&#39;
+</span><span style=color:#998;font-style:italic>// 2, &#39;strawberry&#39;
+</span></code></pre></div><h2 id=conclusion>۵ - نتیجه‌گیری <a href=#conclusion class=anchor>🔗</a></h2><p>همونطور که دیدیم، وقتی معیار کاربرد باشه حلقه‌ی
+for-of
+از بقیه‌ی روش‌ها بهتره.</p><p>هر تفاوتی در سرعت (performance) بین این چهار روش حلقه‌زدن، در حالت عادی نباید اهمیتی داشته باشه. اگه اهمیت داره احتمالا داری یه کار خیلی سنگین از نظر محاسباتی انجام میدی و بنابراین استفاده از
+WebAssembly
+احتمالا گزینه‌ی معقول‌تری باشه.</p><hr><p>منبع:
+<a href=https://2ality.com/2021/01/looping-over-arrays.html target=_blank rel=noopener>Looping over Arrays: for vs. for-in vs. .forEach() vs. for-of</a>
+از وبلاگ
+2ality - JavaScript and more</p></div><div class=tags><a href=http://example.org/tags/javascript>javascript</a>
+<a href=http://example.org/tags/array>array</a>
+<a href=http://example.org/tags/for>for</a></div><script src=https://utteranc.es/client.js repo=yavarjs/utterances-comments issue-term=pathname theme=github-light crossorigin=anonymous async></script></section></main><footer id=footer><p class=copyright>مطالب با اشاره به یاvar به عنوان منبع قابل انتشارن.</p><p class=powerby>قدرت‌گرفته از <a href=http://www.gohugo.io/>Hugo</a> با تم <a href=https://github.com/yavarjs/hugo-theme-mini>mini</a></p></footer></body></html>

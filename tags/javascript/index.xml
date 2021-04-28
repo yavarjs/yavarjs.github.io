@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>javascript on یاvar</title><link>http://example.org/tags/javascript/</link><description>Recent content in javascript on یاvar</description><generator>Hugo -- gohugo.io</generator><language>fa</language><lastBuildDate>Wed, 28 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://example.org/tags/javascript/index.xml" rel="self" type="application/rss+xml"/><item><title>انواع loop برای آرایه‌ها: for و for-in و ()forEach. و for-of</title><link>http://example.org/posts/looping-over-arrays/</link><pubDate>Wed, 28 Apr 2021 00:00:00 +0000</pubDate><guid>http://example.org/posts/looping-over-arrays/</guid><description>&lt;p>در این نوشته چهار روش مختلف برای استفاده از حلقه‌ها روی آرایه‌ها رو مقایسه می‌کنیم.&lt;/p></description></item><item><title>تاریخچه typeof null در جاوااسکریپت</title><link>http://example.org/posts/typeof-null/</link><pubDate>Wed, 21 Apr 2021 00:00:00 +0000</pubDate><guid>http://example.org/posts/typeof-null/</guid><description>&lt;p>خروجی
+‍‍‍‍&lt;code>typeof null&lt;/code>
+توی جاوااسکریپت برابر میشه با
+&lt;code>&amp;quot;object&amp;quot;&lt;/code>
+که به نادرستی این معنی رو منتقل میکنه که
+&lt;strong>null&lt;/strong>
+یه آبجکت (شیء) هست (در صورتی که نیست.
+&lt;em>null&lt;/em>
+یه
+&lt;strong>primitive value&lt;/strong>
+یا مقدار اولیه هست). این یه باگه و چون کدهای فعلی از کار می‌افتن نمیشه رفعش کرد.&lt;/p></description></item></channel></rss>
