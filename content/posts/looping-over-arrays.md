@@ -283,7 +283,7 @@ for (const index of arr.keys()) {
 ```
 ### ۳.۴ - حلقه‌ی for-of و دسترسی همزمان به مقادیر و اندیس‌ها با ()entries.{#for-of-loop-entries}
 متد
-.entries()
+()entries.
 در آرایه‌ها یه
 iterable
 روی جفت‌های
