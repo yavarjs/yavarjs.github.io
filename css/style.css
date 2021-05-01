@@ -20,9 +20,9 @@ a:hover {
 blockquote {
   margin-top: 5px;
   margin-bottom: 5px;
-  padding-left: 1em;
-  margin-left: 0px;
-  border-left: 3px solid #eee;
+  padding-right: 1em;
+  margin-right: 0px;
+  border-right: 3px solid #eee;
   color: #757575;
 }
 
