@@ -5,8 +5,8 @@ tags = ["node.js", "async/await", "promise", "javascript", "callback", "کمرب
 keywords = ["async", "پرامیس", "نود جی‌اس", "جاوااسکریپت", "کالبک"]
 year = "۱۴۰۰"
 month = "۲"
-day = "۱۱" 
-date = "2021-05-01"
+day = "۱۲" 
+date = "2021-05-02"
 draft =  false
 +++
 
