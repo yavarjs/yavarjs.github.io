@@ -411,7 +411,7 @@ main()
   .catch(err => console.error(err));
 ```
 
-### ‍‍۳. filter
+### ‍‍۳. reduce
 ```js
 function asyncThing (value) {
   return new Promise((resolve) => {
