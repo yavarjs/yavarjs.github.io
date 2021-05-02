@@ -1,4 +1,13 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>node.js on یاvar</title><link>http://yavarjs.ir/tags/node.js/</link><description>Recent content in node.js on یاvar</description><generator>Hugo -- gohugo.io</generator><language>fa</language><lastBuildDate>Thu, 29 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://yavarjs.ir/tags/node.js/index.xml" rel="self" type="application/rss+xml"/><item><title>تنظیم Docker برای یه وب‌اپ Node.js</title><link>http://yavarjs.ir/posts/dockerizing-nodejs/</link><pubDate>Thu, 29 Apr 2021 00:00:00 +0000</pubDate><guid>http://yavarjs.ir/posts/dockerizing-nodejs/</guid><description>&lt;p>هدف این نوشته معرفی یه مثاله برای این که چجوری یه اپلیکیشن
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>node.js on یاvar</title><link>http://yavarjs.ir/tags/node.js/</link><description>Recent content in node.js on یاvar</description><generator>Hugo -- gohugo.io</generator><language>fa</language><lastBuildDate>Sat, 01 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://yavarjs.ir/tags/node.js/index.xml" rel="self" type="application/rss+xml"/><item><title>کمربند سیاهِ Async Await در Node.js</title><link>http://yavarjs.ir/posts/mastering-async-await/</link><pubDate>Sat, 01 May 2021 00:00:00 +0000</pubDate><guid>http://yavarjs.ir/posts/mastering-async-await/</guid><description>&lt;p>در این نوشته یاد میگیری که چجوری اپلیکیشن‌های
+Node.jsای
+که با
+callback
+یا
+Promise
+نوشتی رو
+با توابع
+async
+ساده‌ترشون کنی.&lt;/p></description></item><item><title>تنظیم Docker برای یه وب‌اپ Node.js</title><link>http://yavarjs.ir/posts/dockerizing-nodejs/</link><pubDate>Thu, 29 Apr 2021 00:00:00 +0000</pubDate><guid>http://yavarjs.ir/posts/dockerizing-nodejs/</guid><description>&lt;p>هدف این نوشته معرفی یه مثاله برای این که چجوری یه اپلیکیشن
 Node.js
 رو به یه کانتینر
 Docker

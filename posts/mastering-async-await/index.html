@@ -1,0 +1,460 @@
+<!doctype html><html dir=rtl lang=fa><head><title>کمربند سیاهِ Async Await در Node.js | یاvar</title><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><meta name=viewport content="width=device-width,minimum-scale=1"><meta name=description content="در این نوشته چهار روش مختلف برای استفاده از حلقه‌ها روی آرایه‌ها رو مقایسه می‌کنیم."><meta name=generator content="Hugo 0.83.0"><meta name=ROBOTS content="NOINDEX, NOFOLLOW"><meta name=author content="حمیدرضا مهدوی پناه"><meta name=keywords content="js,جاوااسکریپت,loop,array,for-in,for-of,forEach,javascript,array,for"><link href=https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v28.0.0/dist/font-face.css rel=stylesheet type=text/css><link rel=stylesheet href=/css/style.css><script async src="https://www.googletagmanager.com/gtag/js?id=G-TB5X9PJPXB"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','G-TB5X9PJPXB')</script></head><body><nav class=navigation><a href=/>خانه <span class=arrow>→</span></a>
+<a href=/tags>برچسب‌ها</a>
+<a href=/about>درباره یاvar</a></nav><main class=main><section id=single><h1 class=title>کمربند سیاهِ Async Await در Node.js</h1><div class=tip><span>حمیدرضا مهدوی پناه</span>
+<span class=split>·</span>
+<span>خواندن 10 دقیقه</span>
+<span class=split>·</span>
+<span>1943 کلمه</span>
+<span class=split>·</span>
+<span>۱۴۰۰/۲/۱۱</span></div><div class=content><p>در این نوشته یاد میگیری که چجوری اپلیکیشن‌های
+Node.jsای
+که با
+callback
+یا
+Promise
+نوشتی رو
+با توابع
+async
+ساده‌ترشون کنی.</p><p>اگه قبلا یه نگاهی به الگوی
+async/await
+و
+promiseها
+در جاوااسکریپت انداختی ولی هنوز کامل بهشون مسلط نیستی و یا این که فقط نیاز داری تا مرورشون کنی، هدف این نوشته کمک به توئه.</p><h2 id=تابعهای-async-چی-هستن>تابع‌های async چی هستن؟ <a href=#%d8%aa%d8%a7%d8%a8%d8%b9%d9%87%d8%a7%db%8c-async-%da%86%db%8c-%d9%87%d8%b3%d8%aa%d9%86 class=anchor>🔗</a></h2><p>توابع
+async
+به طور پیش‌فرض در
+Node
+در دسترسند و با کلمه‌ی کلیدی
+<code>async</code>
+علامت‌گذاری میشن. این توابع حتی اگه به طور صریح در بدنشون مشخص نکنی، همیشه یه
+promise
+برمیگردونن. در ضمن، فعلا کلمه‌ی کلیدی
+<code>await</code>
+<em>فقط</em>
+در داخل توابع
+async
+قابل استفاده‌اس و نمیشه در دامنه سراسری
+(global scope)
+ازش استفاده کرد.</p><p>داخل یه تابع
+async
+میتونی منتظر یه
+<code>Promise</code>
+بمونی و یا این که در صورت مردود شدنش
+(rejected)
+میتونی خطاش رو دستگیر کنی
+(catch).</p><p>پس اگه یه کدی داری که با
+promiseها
+پیاده‌سازی شده:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000;font-weight:700>function</span> handler (req, res) {
+  <span style=color:#000;font-weight:700>return</span> request(<span style=color:#d14>&#39;https://user-handler-service&#39;</span>)
+    .<span style=color:#000;font-weight:700>catch</span>((err) =&gt; {
+      logger.error(<span style=color:#d14>&#39;Http error&#39;</span>, err);
+      error.logged <span style=color:#000;font-weight:700>=</span> <span style=color:#000;font-weight:700>true</span>;
+      <span style=color:#000;font-weight:700>throw</span> err;
+    })
+    .then((response) =&gt; Mongo.findOne({ user<span style=color:#000;font-weight:700>:</span> response.body.user }))
+    .<span style=color:#000;font-weight:700>catch</span>((err) =&gt; {
+      <span style=color:#000;font-weight:700>!</span>error.logged <span style=color:#000;font-weight:700>&amp;&amp;</span> logger.error(<span style=color:#d14>&#39;Mongo error&#39;</span>, err);
+      error.logged <span style=color:#000;font-weight:700>=</span> <span style=color:#000;font-weight:700>true</span>;
+      <span style=color:#000;font-weight:700>throw</span> err;
+    })
+    .then((<span style=color:#0086b3>document</span>) =&gt; executeLogic(req, res, <span style=color:#0086b3>document</span>))
+    .<span style=color:#000;font-weight:700>catch</span>((err) =&gt; {
+      <span style=color:#000;font-weight:700>!</span>error.logged <span style=color:#000;font-weight:700>&amp;&amp;</span> console.error(err);
+      res.status(<span style=color:#099>500</span>).send();
+    });
+}
+</code></pre></div><p>میتونی با
+‍‍<code>async/await</code>
+شبیه به یه کد همگام
+(synchronous)
+بنویسیش:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000;font-weight:700>async</span> <span style=color:#000;font-weight:700>function</span> handler (req, res) {
+  <span style=color:#000;font-weight:700>let</span> response;
+  <span style=color:#000;font-weight:700>try</span> {
+    response <span style=color:#000;font-weight:700>=</span> <span style=color:#000;font-weight:700>await</span> request(<span style=color:#d14>&#39;https://user-handler-service&#39;</span>)  ;
+  } <span style=color:#000;font-weight:700>catch</span> (err) {
+    logger.error(<span style=color:#d14>&#39;Http error&#39;</span>, err);
+    <span style=color:#000;font-weight:700>return</span> res.status(<span style=color:#099>500</span>).send();
+  }
+
+  <span style=color:#000;font-weight:700>let</span> <span style=color:#0086b3>document</span>;
+  <span style=color:#000;font-weight:700>try</span> {
+    <span style=color:#0086b3>document</span> <span style=color:#000;font-weight:700>=</span> <span style=color:#000;font-weight:700>await</span> Mongo.findOne({ user<span style=color:#000;font-weight:700>:</span> response.body.user });
+  } <span style=color:#000;font-weight:700>catch</span> (err) {
+    logger.error(<span style=color:#d14>&#39;Mongo error&#39;</span>, err);
+    <span style=color:#000;font-weight:700>return</span> res.status(<span style=color:#099>500</span>).send();
+  }
+
+  executeLogic(<span style=color:#0086b3>document</span>, req, res);
+}
+</code></pre></div><p>در حال حاضر در
+Node
+اگه در یه
+promise
+خطایی رخ بده که بهش رسیدگی نشده،
+Node
+فقط بهت هشدار میده، پس بنابراین نیازی نیست تا خودتو توی دردسر ساختن یه
+listener
+بندازی. هرچند چون این اتفاق نشون‌دهنده‌ی یه حالت نامشخصه، توصیه میشه تا اپلیکیشن رو ببندی و کرش کنی؛ دقیقا شبیه به حالتی که یه خطای
+catch
+نشده در جایی از کد رخ میده. این کارو میتونی یا با استفاده از پرچم
+<code>unhandled-rejections=strict--</code>
+در کامند‌لاین انجام بدی یا با پیاده‌سازی چیزی شبیه به این:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js>process.on(<span style=color:#d14>&#39;unhandledRejection&#39;</span>, (err) =&gt; { 
+  console.error(err);
+  process.exit(<span style=color:#099>1</span>);
+})
+</code></pre></div><p>قراره تا قابلیت خارج شدن اتوماتیک از پروسه، در نسخه‌های آینده‌ی
+Node
+اضافه بشه. این که کدت رو از قبل برای اینکار آماده کنی زحمت زیادی نداره ولی خوبیش اینه که وقتی خواستی نسخه‌ها رو آپدیت کنی دیگه نگران این موضوع نیستی.</p><h2 id=الگوها-با-توابع-async>الگوها با توابع async <a href=#%d8%a7%d9%84%da%af%d9%88%d9%87%d8%a7-%d8%a8%d8%a7-%d8%aa%d9%88%d8%a7%d8%a8%d8%b9-async class=anchor>🔗</a></h2><p>از اونجایی که رسیدگی به عملیات ناهمگام
+(asynchronous)
+با استفاده از
+Promiseها
+و یا
+callbackها
+نیاز به الگوهای پیچیده‌ای داره، وقتی که بتونی این عملیات رو جوری پیاده‌سازی کنی که انگار همگام هستن، کار خیلی برات ساده‌تره.</p><p>از نسخه‌ی
+10.0.0
+نود جی‌اس، پشتیبانی از
+async iterators
+و حلقه‌ی مرتبطش یعنی
+for-await
+اضافه شده. این امکانات زمانی بدردت میخورن که میخوای روی مقداری که یه
+iterator method
+برمیگردونه و از قبل مشخص نیستن، حرکت کنی (حلقه بزنی) و کاری رو انجام بدی و حالت نهایی این تکرار
+(iteration)
+هم مشخص نیست - معمولا این حالت حین کار با
+streamها
+پیش میاد.</p><h2 id=تلاش-مجدد-با-عقبنشینی-نمایی-exponential-backoff>تلاش مجدد با عقب‌نشینی نمایی (exponential backoff) <a href=#%d8%aa%d9%84%d8%a7%d8%b4-%d9%85%d8%ac%d8%af%d8%af-%d8%a8%d8%a7-%d8%b9%d9%82%d8%a8%d9%86%d8%b4%db%8c%d9%86%db%8c-%d9%86%d9%85%d8%a7%db%8c%db%8c-exponential-backoff class=anchor>🔗</a></h2><p>پیاده‌سازی الگوریتم تلاش مجدد با
+Promiseها
+خیلی بدترکیبه:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000;font-weight:700>function</span> request(url) {
+  <span style=color:#000;font-weight:700>return</span> <span style=color:#000;font-weight:700>new</span> <span style=color:#0086b3>Promise</span>((resolve, reject) =&gt; {
+    setTimeout(() =&gt; {
+      reject(<span style=color:#d14>`Network error when trying to reach </span><span style=color:#d14>${</span>url<span style=color:#d14>}</span><span style=color:#d14>`</span>);
+    }, <span style=color:#099>500</span>);
+  });
+}
+
+<span style=color:#000;font-weight:700>function</span> requestWithRetry(url, retryCount, currentTries <span style=color:#000;font-weight:700>=</span> <span style=color:#099>1</span>) {
+  <span style=color:#000;font-weight:700>return</span> <span style=color:#000;font-weight:700>new</span> <span style=color:#0086b3>Promise</span>((resolve, reject) =&gt; {
+    <span style=color:#000;font-weight:700>if</span> (currentTries <span style=color:#000;font-weight:700>&lt;=</span> retryCount) {
+      <span style=color:#000;font-weight:700>const</span> timeout <span style=color:#000;font-weight:700>=</span> (<span style=color:#0086b3>Math</span>.pow(<span style=color:#099>2</span>, currentTries) <span style=color:#000;font-weight:700>-</span> <span style=color:#099>1</span>) <span style=color:#000;font-weight:700>*</span> <span style=color:#099>100</span>;
+      request(url)
+        .then(resolve)
+        .<span style=color:#000;font-weight:700>catch</span>((error) =&gt; {
+          setTimeout(() =&gt; {
+            console.log(<span style=color:#d14>&#39;Error: &#39;</span>, error);
+            console.log(<span style=color:#d14>`Waiting </span><span style=color:#d14>${</span>timeout<span style=color:#d14>}</span><span style=color:#d14> ms`</span>);
+            requestWithRetry(url, retryCount, currentTries <span style=color:#000;font-weight:700>+</span> <span style=color:#099>1</span>);
+          }, timeout);
+        });
+    } <span style=color:#000;font-weight:700>else</span> {
+      console.log(<span style=color:#d14>&#39;No retries left, giving up.&#39;</span>);
+      reject(<span style=color:#d14>&#39;No retries left, giving up.&#39;</span>);
+    }
+  });
+}
+
+requestWithRetry(<span style=color:#d14>&#39;http://localhost:3000&#39;</span>)
+  .then((res) =&gt; {
+    console.log(res)
+  })
+  .<span style=color:#000;font-weight:700>catch</span>(err =&gt; {
+    console.error(err)
+  });
+</code></pre></div><p>این پیاده‌سازی کاری که میخوایمو میکنه اما میتونیم بازنویسیش کنیم و با
+<code>async/await</code>
+خیلی راحت‌تر کارو انجام بدیم:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000;font-weight:700>function</span> wait (timeout) {
+  <span style=color:#000;font-weight:700>return</span> <span style=color:#000;font-weight:700>new</span> <span style=color:#0086b3>Promise</span>((resolve) =&gt; {
+    setTimeout(() =&gt; {
+      resolve()
+    }, timeout);
+  });
+}
+
+<span style=color:#000;font-weight:700>async</span> <span style=color:#000;font-weight:700>function</span> requestWithRetry (url) {
+  <span style=color:#000;font-weight:700>const</span> MAX_RETRIES <span style=color:#000;font-weight:700>=</span> <span style=color:#099>10</span>;
+  <span style=color:#000;font-weight:700>for</span> (<span style=color:#000;font-weight:700>let</span> i <span style=color:#000;font-weight:700>=</span> <span style=color:#099>0</span>; i <span style=color:#000;font-weight:700>&lt;=</span> MAX_RETRIES; i<span style=color:#000;font-weight:700>++</span>) {
+    <span style=color:#000;font-weight:700>try</span> {
+      <span style=color:#000;font-weight:700>return</span> <span style=color:#000;font-weight:700>await</span> request(url);
+    } <span style=color:#000;font-weight:700>catch</span> (err) {
+      <span style=color:#000;font-weight:700>const</span> timeout <span style=color:#000;font-weight:700>=</span> <span style=color:#0086b3>Math</span>.pow(<span style=color:#099>2</span>, i);
+      console.log(<span style=color:#d14>&#39;Waiting&#39;</span>, timeout, <span style=color:#d14>&#39;ms&#39;</span>);
+      <span style=color:#000;font-weight:700>await</span> wait(timeout);
+      console.log(<span style=color:#d14>&#39;Retrying&#39;</span>, err.message, i);
+    }
+  }
+}
+</code></pre></div><p>خیلی بیشتر به دل میشینه، نه؟</p><h2 id=مقادیر-میانی-intermediate-values>مقادیر میانی (intermediate values) <a href=#%d9%85%d9%82%d8%a7%d8%af%db%8c%d8%b1-%d9%85%db%8c%d8%a7%d9%86%db%8c-intermediate-values class=anchor>🔗</a></h2><p>با این که مثال پیش‌رو به اندازه‌ی قبلی ترسناک نیست، اما اگه حالتی داشته باشی که ۳ تابع ناهمگام مختلف به شکلی که در زیر توضیح میدم، بهم وابسته باشن، مجبوری تا از بین چندتا راه‌حل زشت و بدترکیب یکیشونو انتخاب کنی.</p><blockquote><p>تابع
+<code>functionA</code>
+یه
+Promise
+برمیگردونه که سپس
+<code>functionB</code>
+به مقدارش نیاز داره و بعد از اون
+<code>functionC</code>
+به مقدار نهایی
+Promiseهای
+جفت تابع
+<code>functionA</code>
+و
+<code>functionB</code>
+نیاز داره.</p></blockquote><h3 id=راه-حل-۱-درخت-کریسمس-then>راه حل ۱: درخت کریسمس then. <a href=#%d8%b1%d8%a7%d9%87-%d8%ad%d9%84-%db%b1-%d8%af%d8%b1%d8%ae%d8%aa-%da%a9%d8%b1%db%8c%d8%b3%d9%85%d8%b3-then class=anchor>🔗</a></h3><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000;font-weight:700>function</span> executeAsyncTask () {
+  <span style=color:#000;font-weight:700>return</span> functionA()
+    .then((valueA) =&gt; {
+      <span style=color:#000;font-weight:700>return</span> functionB(valueA)
+        .then((valueB) =&gt; {          
+          <span style=color:#000;font-weight:700>return</span> functionC(valueA, valueB)
+        })
+    })
+}
+</code></pre></div><p>توی این راه حل، برای انجام
+<code>functionC</code>
+مقدار
+<code>valueA</code>
+رو از کلوژر
+(closure)
+سومین
+<code>then</code>
+میگیری و مقدار
+<code>valueB</code>
+رو از
+Promise
+قبلش که انجام شده. نمیتونی این درخت کریسمس رو مسطح کنی چون در اون صورت کلوژر رو گم میکنی و
+<code>valueA</code>
+در دسترس
+<code>functionC</code>
+نخواهد بود.</p><h3 id=راه-حل-۲-حرکت-به-یه-اسکوپ-scope-بالاتر>راه حل ۲: حرکت به یه اسکوپ (scope) بالاتر <a href=#%d8%b1%d8%a7%d9%87-%d8%ad%d9%84-%db%b2-%d8%ad%d8%b1%da%a9%d8%aa-%d8%a8%d9%87-%db%8c%d9%87-%d8%a7%d8%b3%da%a9%d9%88%d9%be-scope-%d8%a8%d8%a7%d9%84%d8%a7%d8%aa%d8%b1 class=anchor>🔗</a></h3><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000;font-weight:700>function</span> executeAsyncTask () {
+  <span style=color:#000;font-weight:700>let</span> valueA
+  <span style=color:#000;font-weight:700>return</span> functionA()
+    .then((v) =&gt; {
+      valueA <span style=color:#000;font-weight:700>=</span> v
+      <span style=color:#000;font-weight:700>return</span> functionB(valueA)
+    })
+    .then((valueB) =&gt; {
+      <span style=color:#000;font-weight:700>return</span> functionC(valueA, valueB)
+    })
+}
+</code></pre></div><p>توی مثال درخت کریسمس شبیه به همین مثال، از یه اسکوپ بالاتر برای دسترسی به
+<code>valueA</code>
+استفاده کردیم. اما تفاوت این مثال اینه که متغیر
+<code>valueA</code>
+رو خارج از اسکوپ
+<code>then.</code>
+تعریف کردیم تا بتونیم مقدار نهایی اولین
+Promise
+رو بهش انتساب بدیم.</p><p>این مثال قطعا کار میکنه و زنجیره‌ی
+<code>then.</code>
+هم مسطح شده و از نظر معنایی هم درسته. با این وجود اگه از
+<code>valueA</code>
+در جاهای دیگه از تابع استفاده کنی، راه برای پیدا شدن باگ‌های جدید باز میشه. علاوه بر این، مجبوری برای یه مقدار یکسان از دوتا اسم مختلف استفاده کنی -
+<code>valueA</code>
+و
+<code>v</code>.</p><h3 id=راه-حل-۳-آرایهی-غیر-ضروری>راه حل ۳: آرایه‌ی غیر ضروری <a href=#%d8%b1%d8%a7%d9%87-%d8%ad%d9%84-%db%b3-%d8%a2%d8%b1%d8%a7%db%8c%d9%87%db%8c-%d8%ba%db%8c%d8%b1-%d8%b6%d8%b1%d9%88%d8%b1%db%8c class=anchor>🔗</a></h3><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000;font-weight:700>function</span> executeAsyncTask () {
+  <span style=color:#000;font-weight:700>return</span> functionA()
+    .then(valueA =&gt; {
+      <span style=color:#000;font-weight:700>return</span> <span style=color:#0086b3>Promise</span>.all([valueA, functionB(valueA)])
+    })
+    .then(([valueA, valueB]) =&gt; {
+      <span style=color:#000;font-weight:700>return</span> functionC(valueA, valueB)
+    })
+}
+</code></pre></div><p>جز این که میخوای درخت رو مسطح کنی، هیچ دلیلی نداره که
+<code>valueA</code>
+رو همراه با
+Promiseای
+که
+<code>functionB</code>
+برمیگردونه داخل یه آرایه پاس بدیم. مقدار این دو عنصر آرایه ممکنه از دو جنس کاملا مختلف باشن و بنابراین جالب نیست که توی یه آرایه‌ی واحد قرار بگیرن.</p><h3 id=راه-حل-۴-یه-تابع-کمکی-بنویس>راه حل ۴: یه تابع کمکی بنویس <a href=#%d8%b1%d8%a7%d9%87-%d8%ad%d9%84-%db%b4-%db%8c%d9%87-%d8%aa%d8%a7%d8%a8%d8%b9-%da%a9%d9%85%da%a9%db%8c-%d8%a8%d9%86%d9%88%db%8c%d8%b3 class=anchor>🔗</a></h3><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000;font-weight:700>const</span> converge <span style=color:#000;font-weight:700>=</span> (...promises) =&gt; (...args) =&gt; {
+  <span style=color:#000;font-weight:700>let</span> [head, ...tail] <span style=color:#000;font-weight:700>=</span> promises
+  <span style=color:#000;font-weight:700>if</span> (tail.length) {
+    <span style=color:#000;font-weight:700>return</span> head(...args)
+      .then((value) =&gt; converge(...tail)(...args.concat([value])))
+  } <span style=color:#000;font-weight:700>else</span> {
+    <span style=color:#000;font-weight:700>return</span> head(...args)
+  }
+}
+
+functionA(<span style=color:#099>2</span>)
+  .then((valueA) =&gt; converge(functionB, functionC)(valueA))
+</code></pre></div><p>البته که میتونی یه تابع کمکی بنویسی تا این آش شله قلمکار رو درست کنی. اما از نظر خوانایی خیلی ضعیفه و بنابراین ممکنه درکش برای کسایی که توی برنامه‌نویسی
+functional
+موهاشون سفید نشده، سخت باشه.</p><h3 id=با-استفاده-از-asyncawait-به-طور-معجزهآسایی-مشکلاتمون-ناپدید-میشه>با استفاده از <code>async/await</code> به طور معجزه‌آسایی مشکلاتمون ناپدید میشه: <a href=#%d8%a8%d8%a7-%d8%a7%d8%b3%d8%aa%d9%81%d8%a7%d8%af%d9%87-%d8%a7%d8%b2-asyncawait-%d8%a8%d9%87-%d8%b7%d9%88%d8%b1-%d9%85%d8%b9%d8%ac%d8%b2%d9%87%d8%a2%d8%b3%d8%a7%db%8c%db%8c-%d9%85%d8%b4%da%a9%d9%84%d8%a7%d8%aa%d9%85%d9%88%d9%86-%d9%86%d8%a7%d9%be%d8%af%db%8c%d8%af-%d9%85%db%8c%d8%b4%d9%87 class=anchor>🔗</a></h3><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000;font-weight:700>async</span> <span style=color:#000;font-weight:700>function</span> executeAsyncTask () {
+  <span style=color:#000;font-weight:700>const</span> valueA <span style=color:#000;font-weight:700>=</span> <span style=color:#000;font-weight:700>await</span> functionA();
+  <span style=color:#000;font-weight:700>const</span> valueB <span style=color:#000;font-weight:700>=</span> <span style=color:#000;font-weight:700>await</span> functionB(valueA);
+  <span style=color:#000;font-weight:700>return</span> function3(valueA, valueB);
+}
+</code></pre></div><h2 id=چندین-درخواست-موازی-با--asyncawait>چندین درخواست موازی با async/await <a href=#%da%86%d9%86%d8%af%db%8c%d9%86-%d8%af%d8%b1%d8%ae%d9%88%d8%a7%d8%b3%d8%aa-%d9%85%d9%88%d8%a7%d8%b2%db%8c-%d8%a8%d8%a7--asyncawait class=anchor>🔗</a></h2><p>این مثال شبیه قبلیه. فرض کن میخوای چند کار ناهمگام مختلف رو در یک لحظه شروع کنی و از مقادیر برگشتیشون تو جاهای مختلف استفاده کنی:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000;font-weight:700>async</span> <span style=color:#000;font-weight:700>function</span> executeParallelAsyncTasks () {
+  <span style=color:#000;font-weight:700>const</span> [ valueA, valueB, valueC ] <span style=color:#000;font-weight:700>=</span> <span style=color:#000;font-weight:700>await</span> <span style=color:#0086b3>Promise</span>.all([ functionA(), functionB(), functionC() ]);
+  doSomethingWith(valueA);
+  doSomethingElseWith(valueB);
+  doAnotherThingWith(valueC);
+}
+</code></pre></div><h2 id=متدهای-iteration-آرایه>متدهای iteration آرایه <a href=#%d9%85%d8%aa%d8%af%d9%87%d8%a7%db%8c-iteration-%d8%a2%d8%b1%d8%a7%db%8c%d9%87 class=anchor>🔗</a></h2><p>اگرچه رفتارشون خیلی غیرمنتظرست ولی
+میتونی
+<code>map</code> ،<code>filter</code>
+و
+<code>reduce</code>
+رو با توابع
+async
+استفاده کنی. تلاش کن حدس بزنی که خروجی اسکریپت‌های زیر چیه:</p><h3 id=۱-map>‍‍۱. map <a href=#%db%b1-map class=anchor>🔗</a></h3><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000;font-weight:700>function</span> asyncThing (value) {
+  <span style=color:#000;font-weight:700>return</span> <span style=color:#000;font-weight:700>new</span> <span style=color:#0086b3>Promise</span>((resolve) =&gt; {
+    setTimeout(() =&gt; resolve(value), <span style=color:#099>100</span>);
+  });
+}
+
+<span style=color:#000;font-weight:700>async</span> <span style=color:#000;font-weight:700>function</span> main () {
+  <span style=color:#000;font-weight:700>return</span> [<span style=color:#099>1</span>,<span style=color:#099>2</span>,<span style=color:#099>3</span>,<span style=color:#099>4</span>].map(<span style=color:#000;font-weight:700>async</span> (value) =&gt; {
+    <span style=color:#000;font-weight:700>const</span> v <span style=color:#000;font-weight:700>=</span> <span style=color:#000;font-weight:700>await</span> asyncThing(value);
+    <span style=color:#000;font-weight:700>return</span> v <span style=color:#000;font-weight:700>*</span> <span style=color:#099>2</span>;
+  });
+}
+
+main()
+  .then(v =&gt; console.log(v))
+  .<span style=color:#000;font-weight:700>catch</span>(err =&gt; console.error(err));
+</code></pre></div><h3 id=۲-filter>‍‍۲. filter <a href=#%db%b2-filter class=anchor>🔗</a></h3><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000;font-weight:700>function</span> asyncThing (value) {
+  <span style=color:#000;font-weight:700>return</span> <span style=color:#000;font-weight:700>new</span> <span style=color:#0086b3>Promise</span>((resolve) =&gt; {
+    setTimeout(() =&gt; resolve(value), <span style=color:#099>100</span>);
+  });
+}
+
+<span style=color:#000;font-weight:700>async</span> <span style=color:#000;font-weight:700>function</span> main () {
+  <span style=color:#000;font-weight:700>return</span> [<span style=color:#099>1</span>,<span style=color:#099>2</span>,<span style=color:#099>3</span>,<span style=color:#099>4</span>].filter(<span style=color:#000;font-weight:700>async</span> (value) =&gt; {
+    <span style=color:#000;font-weight:700>const</span> v <span style=color:#000;font-weight:700>=</span> <span style=color:#000;font-weight:700>await</span> asyncThing(value);
+    <span style=color:#000;font-weight:700>return</span> v <span style=color:#000;font-weight:700>%</span> <span style=color:#099>2</span> <span style=color:#000;font-weight:700>===</span> <span style=color:#099>0</span>;
+  });
+}
+
+main()
+  .then(v =&gt; console.log(v))
+  .<span style=color:#000;font-weight:700>catch</span>(err =&gt; console.error(err));
+</code></pre></div><h3 id=۳-filter>‍‍۳. filter <a href=#%db%b3-filter class=anchor>🔗</a></h3><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000;font-weight:700>function</span> asyncThing (value) {
+  <span style=color:#000;font-weight:700>return</span> <span style=color:#000;font-weight:700>new</span> <span style=color:#0086b3>Promise</span>((resolve) =&gt; {
+    setTimeout(() =&gt; resolve(value), <span style=color:#099>100</span>);
+  });
+}
+
+<span style=color:#000;font-weight:700>async</span> <span style=color:#000;font-weight:700>function</span> main () {
+  <span style=color:#000;font-weight:700>return</span> [<span style=color:#099>1</span>,<span style=color:#099>2</span>,<span style=color:#099>3</span>,<span style=color:#099>4</span>].reduce(<span style=color:#000;font-weight:700>async</span> (acc, value) =&gt; {
+    <span style=color:#000;font-weight:700>return</span> <span style=color:#000;font-weight:700>await</span> acc <span style=color:#000;font-weight:700>+</span> <span style=color:#000;font-weight:700>await</span> asyncThing(value);
+  }, <span style=color:#0086b3>Promise</span>.resolve(<span style=color:#099>0</span>));
+}
+
+main()
+  .then(v =&gt; console.log(v))
+  .<span style=color:#000;font-weight:700>catch</span>(err =&gt; console.error(err));
+</code></pre></div><p><strong>راه حل‌ها:</strong><br>۱.</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js>[ <span style=color:#0086b3>Promise</span> { <span style=color:#000;font-weight:700>&lt;</span>pending<span style=color:#000;font-weight:700>&gt;</span> }, <span style=color:#0086b3>Promise</span> { <span style=color:#000;font-weight:700>&lt;</span>pending<span style=color:#000;font-weight:700>&gt;</span> }, <span style=color:#0086b3>Promise</span> { <span style=color:#000;font-weight:700>&lt;</span>pending<span style=color:#000;font-weight:700>&gt;</span> }, <span style=color:#0086b3>Promise</span> { <span style=color:#000;font-weight:700>&lt;</span>pending<span style=color:#000;font-weight:700>&gt;</span> } ]
+</code></pre></div><p>۲.<code>[ 4 ,3 ,2 ,1 ]</code><br>۳. <code>10</code></p><p>اگه خروجی هرکدوم از
+promiseهایی
+که
+<code>map</code>
+برمیگردونه رو چاپ کنی، میبینی که نتیجه‌ای که مورد انتظاره میده:
+<code>[ 8 ,6 ,4 ,2 ]</code>.
+تنها مشکل اینه که هرکدوم از این مقادیر توسط
+<code>AsyncFunction</code>
+توی یه
+Promise
+بسته‌بندی شدن.</p><p>پس اگه میخوای مقادیرتو بگیری، باید آرایه‌ی برگشتی رو به
+<code>Promise.all</code>
+پاس بدی:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js>main()
+  .then(v =&gt; <span style=color:#0086b3>Promise</span>.all(v))
+  .then(v =&gt; console.log(v))
+  .<span style=color:#000;font-weight:700>catch</span>(err =&gt; console.error(err));
+</code></pre></div><p>بدون
+<code>async/await</code>
+باید اول منتظر تموم شدن
+promiseها
+میموندی و بعد روی مقادیرشون
+<code>map</code>
+رو اجرا میکردی:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000;font-weight:700>function</span> main () {
+  <span style=color:#000;font-weight:700>return</span> <span style=color:#0086b3>Promise</span>.all([<span style=color:#099>1</span>,<span style=color:#099>2</span>,<span style=color:#099>3</span>,<span style=color:#099>4</span>].map((value) =&gt; asyncThing(value)));
+}
+
+main()
+  .then(values =&gt; values.map((value) =&gt; value <span style=color:#000;font-weight:700>*</span> <span style=color:#099>2</span>))
+  .then(v =&gt; console.log(v))
+  .<span style=color:#000;font-weight:700>catch</span>(err =&gt; console.error(err));
+</code></pre></div><p><strong>روش دوم یکم واضح‌تره، نه؟</strong><br>روشی که از
+<code>async/await</code>
+استفاده میکنه زمانی که برای هر مقدار
+promise
+نیازه تا کارهای همگام طولانی بکنی و در عین حال کارهای ناهمگام هم طولانی‌اند، میتونه بدردت بخوره.</p><p>با این روش، به محض این که اولین مقدار رو بدست بیاری، میتونی محاسبتش رو شروع کنی و مجبور نیسی برای شروع محاسباتت منتظر بقیه‌ی
+Promiseها
+بمونی تا تکمیل بشن. اگرچه خروجی نهایی مقادیر توی
+Promiseها
+پیچیده شدن، اما این
+Promiseها
+خیلی سریع تکمیل میشن و در نهایت کل فرآیند سریع‌تر از زمانیه که بخوای به طور متوالی انجامش بدی.</p><p><strong>داستان <code>filter</code> چیه؟ مطمئنا یه چیزی این وسط اشتباهه&mldr;</strong><br>خب، درست حدس زدی: اگرچه مقادیر برگشتی از این قراره:
+<code>[ false, true, false, true ]</code>
+اما هرکدومشون توی یه
+Promise
+پیچیده شدن، و از اونجایی که هر
+Promise
+یه مقدار اصطلاحا
+truthy
+هست (یعنی زمانیه که به شکل بولین ببینیمش، مقدارش <code>true</code> میشه)،
+تمام مقادیر آرایه برمیگردن و هیچکدوم فیلتر نمیشن. متاسفانه تنها کاری که برای رفع این مشکل از دستت برمیاد اینه که اول منتظر بشی تا مقادیر
+Promiseها
+برگردن و بعد فیلترشون کنی.</p><p>متد
+<code>reduce</code>
+خیلی سرراسته. اگرچه یادت باشه که باید مقدار اولیه رو داخل
+<code>Promise.resolve</code>
+بپیچی، و همچنین مقدار متغیر تجمعی هم به صورت
+Promise
+برمیگرده و بنابراین نیازه تا براش از
+<code>await</code>
+استفاده کنی.</p><h2 id=بازنویسی-اپلیکیشنهای-برپایهی-callback>بازنویسی اپلیکیشن‌های برپایه‌ی callback <a href=#%d8%a8%d8%a7%d8%b2%d9%86%d9%88%db%8c%d8%b3%db%8c-%d8%a7%d9%be%d9%84%db%8c%da%a9%db%8c%d8%b4%d9%86%d9%87%d8%a7%db%8c-%d8%a8%d8%b1%d9%be%d8%a7%db%8c%d9%87%db%8c-callback class=anchor>🔗</a></h2><p>توابع
+async
+به طور پیشفرض یه
+<code>Promise</code>
+برمیگردونن، بنابراین میتونی هر تابعی که برپایه‌ی
+callback
+هست رو جوری بازنویسی کنی که از
+Promiseها
+استفاده کنه و سپس مقدار بازگشتیش رو با
+<code>await</code>
+بگیری. توی
+Node.js
+برای تبدیل یه تابع برپایه‌ی
+callback
+به یه تابع برپایه‌ی
+Promise
+میتونی از تابع
+<a href=http://2ality.com/2017/05/util-promisify.html target=_blank rel=noopener>util.promisify</a>
+استفاده کنی.</p><h2 id=بازنویسی-اپلیکیشنهای-برپایهی-promise>بازنویسی اپلیکیشن‌های برپایه‌ی Promise <a href=#%d8%a8%d8%a7%d8%b2%d9%86%d9%88%db%8c%d8%b3%db%8c-%d8%a7%d9%be%d9%84%db%8c%da%a9%db%8c%d8%b4%d9%86%d9%87%d8%a7%db%8c-%d8%a8%d8%b1%d9%be%d8%a7%db%8c%d9%87%db%8c-promise class=anchor>🔗</a></h2><p>زنجیره‌های ساده‌ی
+<code>then.</code>
+رو خیلی سرراست میشه با استفاده از
+<code>async/await</code>
+بازنویسی کرد.</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000;font-weight:700>function</span> asyncTask () {
+  <span style=color:#000;font-weight:700>return</span> functionA()
+    .then((valueA) =&gt; functionB(valueA))
+    .then((valueB) =&gt; functionC(valueB))
+    .then((valueC) =&gt; functionD(valueC))
+    .<span style=color:#000;font-weight:700>catch</span>((err) =&gt; logger.error(err))
+}
+</code></pre></div><p>تبدیل میشه به:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000;font-weight:700>async</span> <span style=color:#000;font-weight:700>function</span> asyncTask () {
+  <span style=color:#000;font-weight:700>try</span> {
+    <span style=color:#000;font-weight:700>const</span> valueA <span style=color:#000;font-weight:700>=</span> <span style=color:#000;font-weight:700>await</span> functionA();
+    <span style=color:#000;font-weight:700>const</span> valueB <span style=color:#000;font-weight:700>=</span> <span style=color:#000;font-weight:700>await</span> functionB(valueA);
+    <span style=color:#000;font-weight:700>const</span> valueC <span style=color:#000;font-weight:700>=</span> <span style=color:#000;font-weight:700>await</span> functionC(valueB);
+    <span style=color:#000;font-weight:700>return</span> <span style=color:#000;font-weight:700>await</span> functionD(valueC);
+  } <span style=color:#000;font-weight:700>catch</span> (err) {
+    logger.error(err);
+  }
+}
+</code></pre></div><h2 id=اپلیکیشنهای-nodejs-رو-با-asyncawait-بازنویسی-کن-اگه>اپلیکیشن‌های Node.js رو با <code>async/await</code> بازنویسی کن اگه: <a href=#%d8%a7%d9%be%d9%84%db%8c%da%a9%db%8c%d8%b4%d9%86%d9%87%d8%a7%db%8c-nodejs-%d8%b1%d9%88-%d8%a8%d8%a7-asyncawait-%d8%a8%d8%a7%d8%b2%d9%86%d9%88%db%8c%d8%b3%db%8c-%da%a9%d9%86-%d8%a7%da%af%d9%87 class=anchor>🔗</a></h2><ul><li><p>مفاهیم قدیمی و باحالی مثل شرط‌های
+<code>if-else</code>
+و حلقه‌های
+<code>for/while</code>
+رو دوس داری.</p></li><li><p>باور داری که بلوک‌های
+<code>try-catch</code>
+راه درست رسیدگی به خطاهاست.</p></li></ul><p>همونطور که باهم دیدیم، استفاده از
+<code>async/await</code>
+هم خوانایی کدهارو بیشتر میکنه و هم نوشتنشون رو ساده‌تر میکنه و در بسیاری از کارها مناسب‌تر از زنجیره‌های
+<code>()Promise.then</code>
+هست. اما اگه به شور و اشتیاقی که در چند سال اخیر برای برنامه‌نویسی فانکشنال بوجود اومده دچار شدی، شاید بهتر باشه که از خیر این قابلیت جاوااسکریپت بگذری.</p><hr><p>منبع:
+<a href=https://blog.risingstack.com/mastering-async-await-in-nodejs/ target=_blank rel=noopener>Rewriting Node.js apps with async/await</a>
+از وبلاگ
+RisingStack</p></div><div class=tags><a href=http://yavarjs.ir/tags/node.js>node.js</a>
+<a href=http://yavarjs.ir/tags/async/await>async/await</a>
+<a href=http://yavarjs.ir/tags/promise>promise</a>
+<a href=http://yavarjs.ir/tags/javascript>javascript</a>
+<a href=http://yavarjs.ir/tags/callback>callback</a>
+<a href=http://yavarjs.ir/tags/%DA%A9%D9%85%D8%B1%D8%A8%D9%86%D8%AF-%D8%B3%DB%8C%D8%A7%D9%87>کمربند سیاه</a></div><script src=https://utteranc.es/client.js repo=yavarjs/utterances-comments issue-term=pathname theme=github-light crossorigin=anonymous async></script></section></main><footer id=footer><p class=copyright>مطالب با اشاره به یاvar به عنوان منبع قابل انتشارن.</p><p class=powerby>قدرت‌گرفته از <a href=http://www.gohugo.io/>Hugo</a> با تم <a href=https://github.com/yavarjs/hugo-theme-mini>mini</a></p></footer></body></html>
