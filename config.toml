@@ -1,7 +1,9 @@
 baseURL = "http://yavarjs.ir/"
 languageCode = "fa"
 title = "یاvar"
-theme= "mini"
+theme = "mini"
+
+enableRobotsTXT = true
 
 googleAnalytics = "G-TB5X9PJPXB"
 
