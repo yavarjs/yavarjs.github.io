@@ -39,3 +39,6 @@ googleAnalytics = "G-TB5X9PJPXB"
 [markup]
     [markup.highlight]
         style = "github"
+        lineNos = true
+        anchorLineNos = true
+        lineNumbersInTable = false
