@@ -27,7 +27,7 @@ Node.js
 
 در بخش اول این راهنما یه وب‌اپلیکیشن ساده رو با
 Node.js
-میسازی و سپس یه 
+میسازی و سپس یه
 image
 داکر برای اون اپلکیشن درست میکنی و در آخر هم یه کانتینر رو از روی اون
 image
@@ -50,6 +50,7 @@ image
 در ابتدا یه فولدر بساز که تمام فایلها قراره اونجا زندگی کنن. توی این فولدر یه فایل
 `package.json`
 بساز که توضیحاتیه درمورد اپ و وابستگی‌هاش:
+
 ```json
 {
   "name": "docker_web_app",
@@ -65,6 +66,7 @@ image
   }
 }
 ```
+
 دستور
 `npm install`
 رو اجرا کن. اگه از نسخه‌ی ۵ به بالای
@@ -80,24 +82,26 @@ image
 بساز که یه وب‌اپ رو شامل میشه که از فریمورک
 [Express.js](https://expressjs.com/)
 استفاده میکنه:
-```js
-'use strict';
 
-const express = require('express');
+```js
+"use strict"
+
+const express = require("express")
 
 // مقادیر ثابت
-const PORT = 8080;
-const HOST = '0.0.0.0';
+const PORT = 8080
+const HOST = "0.0.0.0"
 
 // اپ
-const app = express();
-app.get('/', (req, res) => {
-  res.send('Hello World');
-});
+const app = express()
+app.get("/", (req, res) => {
+  res.send("Hello World")
+})
 
-app.listen(PORT, HOST);
-console.log(`Running on http://${HOST}:${PORT}`);
+app.listen(PORT, HOST)
+console.log(`Running on http://${HOST}:${PORT}`)
 ```
+
 توی مراحل بعدی، میبینی که چجوری میتونی این اپ رو با استفاده از ایمیج رسمی داکر، داخل یه کانتینر اجراش کنی. اول از همه نیاز داری تا یه
 Docker image
 برای اپلیکیشنت بسازی.
@@ -106,9 +110,11 @@ Docker image
 
 یه فایل خالی بساز که اسمش هست
 `Dockerfile`:
+
 ```bash
 touch Dockerfile
 ```
+
 این فایل رو داخل ادیتور مورد علاقت باز کن.
 
 اولین کار اینه که ببینیم از چه ایمیجی کارمون رو شروع کنیم. اینجا از آخرین نسخه‌ی پشتیبانی بلندمدت
@@ -120,16 +126,20 @@ touch Dockerfile
 که در مخزن
 [Docker Hub](https://hub.docker.com/_/node)
 موجوده:
+
 ```docker
 FROM node:14
 ```
+
 سپس توی ایمیج یه فولدر بساز که داخلش کدهای اپلیکیشن رو قرار بدی، این فولدر قراره فولدر کاری
 (working directory)
 برای اپلیکیشنت باشه:
+
 ```docker
 # رو بساز app دایرکتوری
 WORKDIR /usr/src/app
- ```
+```
+
 ایمیج
 (node:14)
 از قبل داخلش
@@ -143,7 +153,8 @@ NPM
 استفاده میکنی، فایل
 `package-lock.json`
 ساخته
-*نمیشه*.
+_نمیشه_.
+
 ```docker
 # وابستگی‌های اپ رو نصب کن
 # از علامت ستاره استفاده شده تا هم فایل قفل و هم فایل عادی کپی بشه
@@ -153,6 +164,7 @@ RUN npm install
 # اگه داری اپلیکیشن رو برای پروداکشن میسازی از دستور زیر استفاده کن
 # RUN npm ci --only=production
 ```
+
 دقت کن که به جای کپی کردن کل فولدر کاریمون، فقط فایل
 `package.json`
 رو کپی کردیم. این کار بهمون اجازه میده تا از مزیت لایه‌های قابل کش در داکر استفاده کنیم
@@ -166,30 +178,37 @@ build
 برای بسته‌بندی کردن سورس‌کدهای اپ توی ایمیج داکر، از دستور
 `COPY`
 استفاده کن:
+
 ```docker
 # سورس اپ رو بسته‌بندی کن
 COPY . .
 ```
+
 اپلیکیشنت خودشو به پورت
 `8080`
 میچسبونه، پس از دستور
 `EXPOSE`
 استفاده کن تا
 داکر این پورت رو برات مپ کنه:
+
 ```docker
 EXPOSE 8080
 ```
+
 در آخر، فرمانی که اپلیکیشنت رو به اجرا درمیاره با استفاده از
 `CMD`
 تعریف کن. در اینجا ما از
 ‍`node server.js`
 برای شروع سرور استفاده میکنیم:
+
 ```docker
 CMD [ "node", "server.js" ]
 ```
+
 فایل
 `dockerfile`
 الان باید اینشکلی باشه:
+
 ```docker
 FROM node:14
 
@@ -211,18 +230,22 @@ CMD [ "node", "server.js" ]
 ```
 
 ## فایل dockerignore.
+
 یه فایل
 ‍‍`dockerignore`
 داخل همون فولدری که فایل
 ` dockerfile`
 هست بساز که محتواش ایناس:
+
 ```text
 node_modules
 npm-debug.log
 ```
+
 اینکار باعث میشه که ماژول‌های محلی (ماژول‌هایی که روی سیستم خودت داخل فولدر اپ نصب کردی) و لاگ‌های دیباگ توی ایمیج داکر کپی نشه.
 
 ## ساخت image
+
 برو به فولدری که
 `dockerfile`
 داخلشه و فرمان زیر رو اجرا کن تا ایمیج داکر رو بسازه. پرچم
@@ -230,10 +253,13 @@ npm-debug.log
 یه برچسب به ایمیج میچسبونه که بعدا راحت‌تر بتونی با فرمان
 `docker images`
 پیداش کنی:
+
 ```bash
 docker build . -t <your username>/node-web-app
 ```
+
 حالا باید داکر ایمیجت رو لیست کرده باشه:
+
 ```bash
 $ docker images
 
@@ -244,15 +270,19 @@ node                            14         1934b0b038d1    5 days ago
 ```
 
 ## اجرای image
+
 اجرا کردن ایمیجل با پرچم
 `d-`
 کانتینر رو در پس‌زمینه اجرا میکنه. پرچم
 `p-`
 یه پورت خصوصی داخل کانتینر رو به یه پورت عمومی ریدایرکت میکنه. ایمیجی که از قبل ساختی رو اجرا کن:
+
 ```bash
 docker run -p 49160:8080 -d <your username>/node-web-app
 ```
+
 خروجی اپلیکیشنت رو چاپ کن:
+
 ```bash
 # آیدی کانتینر رو پیدا کن
 $ docker ps
@@ -263,9 +293,11 @@ $ docker logs <container id>
 # مثال
 Running on http://localhost:8080
 ```
+
 اگه میخوای بری داخل خود کانتینر، میتونی از فرمان
 `exec`
 استفاده کنی:
+
 ```bash
 # به کانتینر وارد شو
 $ docker exec -it <container id> /bin/bash
@@ -274,6 +306,7 @@ $ docker exec -it <container id> /bin/bash
 ## تست
 
 برای این که اپلیکیشنت رو تست کنی، پورتی رو که داکر مپ کرده پیدا کن:
+
 ```bash
 $ docker ps
 
@@ -281,6 +314,7 @@ $ docker ps
 ID            IMAGE                                COMMAND    ...   PORTS
 ecce33b30ebf  <your username>/node-web-app:latest  npm start  ...   49160->8080
 ```
+
 توی مثال بالا، داکر پورت داخلی
 `8080`
 کانتینر رو به پورت
@@ -290,6 +324,7 @@ ecce33b30ebf  <your username>/node-web-app:latest  npm start  ...   49160->8080
 حالا اپلیکیشنت رو با استفاده از
 `curl`
 فراخوانی کن:
+
 ```bash
 $ curl -i localhost:49160
 
@@ -312,6 +347,6 @@ Docker
 
 ---
 
-منبع: 
+منبع:
 [Dockerizing a Node.js web app](https://nodejs.org/en/docs/guides/nodejs-docker-webapp/)
 از وبسایت رسمی نود جی‌اس

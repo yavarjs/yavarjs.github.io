@@ -19,7 +19,7 @@ Promise
 نوشتی رو
 با توابع
 async
-ساده‌ترشون کنی. 
+ساده‌ترشون کنی.
 
 <!--more-->
 
@@ -30,6 +30,7 @@ promiseها
 در جاوااسکریپت انداختی ولی هنوز کامل بهشون مسلط نیستی و یا این که فقط نیاز داری تا مرورشون کنی، هدف این نوشته کمک به توئه.
 
 ## تابع‌های async چی هستن؟
+
 توابع
 async
 به طور پیش‌فرض در
@@ -40,7 +41,7 @@ Node
 promise
 برمیگردونن. در ضمن، فعلا کلمه‌ی کلیدی
 `await`
-*فقط*
+_فقط_
 در داخل توابع
 async
 قابل استفاده‌اس و نمیشه در دامنه سراسری
@@ -59,53 +60,57 @@ async
 پس اگه یه کدی داری که با
 promiseها
 پیاده‌سازی شده:
+
 ```js
-function handler (req, res) {
-  return request('https://user-handler-service')
+function handler(req, res) {
+  return request("https://user-handler-service")
     .catch((err) => {
-      logger.error('Http error', err);
-      error.logged = true;
-      throw err;
+      logger.error("Http error", err)
+      error.logged = true
+      throw err
     })
     .then((response) => Mongo.findOne({ user: response.body.user }))
     .catch((err) => {
-      !error.logged && logger.error('Mongo error', err);
-      error.logged = true;
-      throw err;
+      !error.logged && logger.error("Mongo error", err)
+      error.logged = true
+      throw err
     })
     .then((document) => executeLogic(req, res, document))
     .catch((err) => {
-      !error.logged && console.error(err);
-      res.status(500).send();
-    });
+      !error.logged && console.error(err)
+      res.status(500).send()
+    })
 }
 ```
+
 میتونی با
 ‍‍`async/await`
 شبیه به یه کد همگام
 (synchronous)
 بنویسیش:
+
 ```js
-async function handler (req, res) {
-  let response;
+async function handler(req, res) {
+  let response
   try {
-    response = await request('https://user-handler-service')  ;
+    response = await request("https://user-handler-service")
   } catch (err) {
-    logger.error('Http error', err);
-    return res.status(500).send();
+    logger.error("Http error", err)
+    return res.status(500).send()
   }
 
-  let document;
+  let document
   try {
-    document = await Mongo.findOne({ user: response.body.user });
+    document = await Mongo.findOne({ user: response.body.user })
   } catch (err) {
-    logger.error('Mongo error', err);
-    return res.status(500).send();
+    logger.error("Mongo error", err)
+    return res.status(500).send()
   }
 
-  executeLogic(document, req, res);
+  executeLogic(document, req, res)
 }
 ```
+
 در حال حاضر در
 Node
 اگه در یه
@@ -119,17 +124,20 @@ catch
 نشده در جایی از کد رخ میده. این کارو میتونی یا با استفاده از پرچم
 `unhandled-rejections=strict--`
 در کامند‌لاین انجام بدی یا با پیاده‌سازی چیزی شبیه به این:
+
 ```js
-process.on('unhandledRejection', (err) => { 
-  console.error(err);
-  process.exit(1);
+process.on("unhandledRejection", (err) => {
+  console.error(err)
+  process.exit(1)
 })
 ```
+
 قراره تا قابلیت خارج شدن اتوماتیک از پروسه، در نسخه‌های آینده‌ی
 Node
 اضافه بشه. این که کدت رو از قبل برای اینکار آماده کنی زحمت زیادی نداره ولی خوبیش اینه که وقتی خواستی نسخه‌ها رو آپدیت کنی دیگه نگران این موضوع نیستی.
 
 ## الگوها با توابع async
+
 از اونجایی که رسیدگی به عملیات ناهمگام
 (asynchronous)
 با استفاده از
@@ -153,105 +161,111 @@ streamها
 پیش میاد.
 
 ## تلاش مجدد با عقب‌نشینی نمایی (exponential backoff)
+
 پیاده‌سازی الگوریتم تلاش مجدد با
 Promiseها
 خیلی بدترکیبه:
+
 ```js
 function request(url) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      reject(`Network error when trying to reach ${url}`);
-    }, 500);
-  });
+      reject(`Network error when trying to reach ${url}`)
+    }, 500)
+  })
 }
 
 function requestWithRetry(url, retryCount, currentTries = 1) {
   return new Promise((resolve, reject) => {
     if (currentTries <= retryCount) {
-      const timeout = (Math.pow(2, currentTries) - 1) * 100;
+      const timeout = (Math.pow(2, currentTries) - 1) * 100
       request(url)
         .then(resolve)
         .catch((error) => {
           setTimeout(() => {
-            console.log('Error: ', error);
-            console.log(`Waiting ${timeout} ms`);
-            requestWithRetry(url, retryCount, currentTries + 1);
-          }, timeout);
-        });
+            console.log("Error: ", error)
+            console.log(`Waiting ${timeout} ms`)
+            requestWithRetry(url, retryCount, currentTries + 1)
+          }, timeout)
+        })
     } else {
-      console.log('No retries left, giving up.');
-      reject('No retries left, giving up.');
+      console.log("No retries left, giving up.")
+      reject("No retries left, giving up.")
     }
-  });
+  })
 }
 
-requestWithRetry('http://localhost:3000')
+requestWithRetry("http://localhost:3000")
   .then((res) => {
     console.log(res)
   })
-  .catch(err => {
+  .catch((err) => {
     console.error(err)
-  });
+  })
 ```
+
 این پیاده‌سازی کاری که میخوایمو میکنه اما میتونیم بازنویسیش کنیم و با
 `async/await`
 خیلی راحت‌تر کارو انجام بدیم:
+
 ```js
-function wait (timeout) {
+function wait(timeout) {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve()
-    }, timeout);
-  });
+    }, timeout)
+  })
 }
 
-async function requestWithRetry (url) {
-  const MAX_RETRIES = 10;
+async function requestWithRetry(url) {
+  const MAX_RETRIES = 10
   for (let i = 0; i <= MAX_RETRIES; i++) {
     try {
-      return await request(url);
+      return await request(url)
     } catch (err) {
-      const timeout = Math.pow(2, i);
-      console.log('Waiting', timeout, 'ms');
-      await wait(timeout);
-      console.log('Retrying', err.message, i);
+      const timeout = Math.pow(2, i)
+      console.log("Waiting", timeout, "ms")
+      await wait(timeout)
+      console.log("Retrying", err.message, i)
     }
   }
 }
 ```
+
 خیلی بیشتر به دل میشینه، نه؟
 
 ## مقادیر میانی (intermediate values)
+
 با این که مثال پیش‌رو به اندازه‌ی قبلی ترسناک نیست، اما اگه حالتی داشته باشی که ۳ تابع ناهمگام مختلف به شکلی که در زیر توضیح میدم، بهم وابسته باشن، مجبوری تا از بین چندتا راه‌حل زشت و بدترکیب یکیشونو انتخاب کنی.
 
->تابع
->`functionA`
->یه
->Promise
->برمیگردونه که سپس
->`functionB`
->به مقدارش نیاز داره و بعد از اون
->`functionC`
->به مقدار نهایی
->Promiseهای
->جفت تابع
->`functionA`
->و
->`functionB`
->نیاز داره.
+> تابع
+> `functionA`
+> یه
+> Promise
+> برمیگردونه که سپس
+> `functionB`
+> به مقدارش نیاز داره و بعد از اون
+> `functionC`
+> به مقدار نهایی
+> Promiseهای
+> جفت تابع
+> `functionA`
+> و
+> `functionB`
+> نیاز داره.
 
 ### راه حل ۱: درخت کریسمس then.
+
 ```js
-function executeAsyncTask () {
-  return functionA()
-    .then((valueA) => {
-      return functionB(valueA)
-        .then((valueB) => {          
-          return functionC(valueA, valueB)
-        })
+function executeAsyncTask() {
+  return functionA().then((valueA) => {
+    return functionB(valueA).then((valueB) => {
+      return functionC(valueA, valueB)
     })
+  })
 }
 ```
+
 توی این راه حل، برای انجام
 `functionC`
 مقدار
@@ -269,9 +283,11 @@ Promise
 در دسترس
 `functionC`
 نخواهد بود.
+
 ### راه حل ۲: حرکت به یه اسکوپ (scope) بالاتر
+
 ```js
-function executeAsyncTask () {
+function executeAsyncTask() {
   let valueA
   return functionA()
     .then((v) => {
@@ -283,6 +299,7 @@ function executeAsyncTask () {
     })
 }
 ```
+
 توی مثال درخت کریسمس شبیه به همین مثال، از یه اسکوپ بالاتر برای دسترسی به
 `valueA`
 استفاده کردیم. اما تفاوت این مثال اینه که متغیر
@@ -303,10 +320,11 @@ Promise
 `v`.
 
 ### راه حل ۳: آرایه‌ی غیر ضروری
+
 ```js
-function executeAsyncTask () {
+function executeAsyncTask() {
   return functionA()
-    .then(valueA => {
+    .then((valueA) => {
       return Promise.all([valueA, functionB(valueA)])
     })
     .then(([valueA, valueB]) => {
@@ -314,6 +332,7 @@ function executeAsyncTask () {
     })
 }
 ```
+
 جز این که میخوای درخت رو مسطح کنی، هیچ دلیلی نداره که
 `valueA`
 رو همراه با
@@ -323,45 +342,57 @@ Promiseای
 برمیگردونه داخل یه آرایه پاس بدیم. مقدار این دو عنصر آرایه ممکنه از دو جنس کاملا مختلف باشن و بنابراین جالب نیست که توی یه آرایه‌ی واحد قرار بگیرن.
 
 ### راه حل ۴: یه تابع کمکی بنویس
-```js
-const converge = (...promises) => (...args) => {
-  let [head, ...tail] = promises
-  if (tail.length) {
-    return head(...args)
-      .then((value) => converge(...tail)(...args.concat([value])))
-  } else {
-    return head(...args)
-  }
-}
 
-functionA(2)
-  .then((valueA) => converge(functionB, functionC)(valueA))
+```js
+const converge =
+  (...promises) =>
+  (...args) => {
+    let [head, ...tail] = promises
+    if (tail.length) {
+      return head(...args).then((value) =>
+        converge(...tail)(...args.concat([value]))
+      )
+    } else {
+      return head(...args)
+    }
+  }
+
+functionA(2).then((valueA) => converge(functionB, functionC)(valueA))
 ```
+
 البته که میتونی یه تابع کمکی بنویسی تا این آش شله قلمکار رو درست کنی. اما از نظر خوانایی خیلی ضعیفه و بنابراین ممکنه درکش برای کسایی که توی برنامه‌نویسی
 functional
 موهاشون سفید نشده، سخت باشه.
 
 ### با استفاده از `async/await` به طور معجزه‌آسایی مشکلاتمون ناپدید میشه:
+
 ```js
-async function executeAsyncTask () {
-  const valueA = await functionA();
-  const valueB = await functionB(valueA);
-  return function3(valueA, valueB);
+async function executeAsyncTask() {
+  const valueA = await functionA()
+  const valueB = await functionB(valueA)
+  return function3(valueA, valueB)
 }
 ```
 
-## چندین درخواست موازی با  async/await
+## چندین درخواست موازی با async/await
+
 این مثال شبیه قبلیه. فرض کن میخوای چند کار ناهمگام مختلف رو در یک لحظه شروع کنی و از مقادیر برگشتیشون تو جاهای مختلف استفاده کنی:
+
 ```js
-async function executeParallelAsyncTasks () {
-  const [ valueA, valueB, valueC ] = await Promise.all([ functionA(), functionB(), functionC() ]);
-  doSomethingWith(valueA);
-  doSomethingElseWith(valueB);
-  doAnotherThingWith(valueC);
+async function executeParallelAsyncTasks() {
+  const [valueA, valueB, valueC] = await Promise.all([
+    functionA(),
+    functionB(),
+    functionC(),
+  ])
+  doSomethingWith(valueA)
+  doSomethingElseWith(valueB)
+  doAnotherThingWith(valueC)
 }
 ```
 
 ## متدهای iteration آرایه
+
 اگرچه رفتارشون خیلی غیرمنتظرست ولی
 میتونی
 `map` ،`filter`
@@ -372,70 +403,75 @@ async
 استفاده کنی. تلاش کن حدس بزنی که خروجی اسکریپت‌های زیر چیه:
 
 ### ‍‍۱. map
+
 ```js
-function asyncThing (value) {
+function asyncThing(value) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(value), 100);
-  });
+    setTimeout(() => resolve(value), 100)
+  })
 }
 
-async function main () {
-  return [1,2,3,4].map(async (value) => {
-    const v = await asyncThing(value);
-    return v * 2;
-  });
+async function main() {
+  return [1, 2, 3, 4].map(async (value) => {
+    const v = await asyncThing(value)
+    return v * 2
+  })
 }
 
 main()
-  .then(v => console.log(v))
-  .catch(err => console.error(err));
+  .then((v) => console.log(v))
+  .catch((err) => console.error(err))
 ```
 
 ### ‍‍۲. filter
+
 ```js
-function asyncThing (value) {
+function asyncThing(value) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(value), 100);
-  });
+    setTimeout(() => resolve(value), 100)
+  })
 }
 
-async function main () {
-  return [1,2,3,4].filter(async (value) => {
-    const v = await asyncThing(value);
-    return v % 2 === 0;
-  });
+async function main() {
+  return [1, 2, 3, 4].filter(async (value) => {
+    const v = await asyncThing(value)
+    return v % 2 === 0
+  })
 }
 
 main()
-  .then(v => console.log(v))
-  .catch(err => console.error(err));
+  .then((v) => console.log(v))
+  .catch((err) => console.error(err))
 ```
 
 ### ‍‍۳. reduce
+
 ```js
-function asyncThing (value) {
+function asyncThing(value) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(value), 100);
-  });
+    setTimeout(() => resolve(value), 100)
+  })
 }
 
-async function main () {
-  return [1,2,3,4].reduce(async (acc, value) => {
-    return await acc + await asyncThing(value);
-  }, Promise.resolve(0));
+async function main() {
+  return [1, 2, 3, 4].reduce(async (acc, value) => {
+    return (await acc) + (await asyncThing(value))
+  }, Promise.resolve(0))
 }
 
 main()
-  .then(v => console.log(v))
-  .catch(err => console.error(err));
+  .then((v) => console.log(v))
+  .catch((err) => console.error(err))
 ```
 
-**راه حل‌ها:**   
+**راه حل‌ها:**  
 ۱.
+
 ```js
 [ Promise { <pending> }, Promise { <pending> }, Promise { <pending> }, Promise { <pending> } ]
 ```
-۲.`[ 4 ,3 ,2 ,1 ]`   
+
+۲.`[ 4 ,3 ,2 ,1 ]`  
 ۳. `10`
 
 اگه خروجی هرکدوم از
@@ -453,11 +489,12 @@ Promise
 پس اگه میخوای مقادیرتو بگیری، باید آرایه‌ی برگشتی رو به
 `Promise.all`
 پاس بدی:
+
 ```js
 main()
-  .then(v => Promise.all(v))
-  .then(v => console.log(v))
-  .catch(err => console.error(err));
+  .then((v) => Promise.all(v))
+  .then((v) => console.log(v))
+  .catch((err) => console.error(err))
 ```
 
 بدون
@@ -467,17 +504,19 @@ promiseها
 میموندی و بعد روی مقادیرشون
 `map`
 رو اجرا میکردی:
+
 ```js
-function main () {
-  return Promise.all([1,2,3,4].map((value) => asyncThing(value)));
+function main() {
+  return Promise.all([1, 2, 3, 4].map((value) => asyncThing(value)))
 }
 
 main()
-  .then(values => values.map((value) => value * 2))
-  .then(v => console.log(v))
-  .catch(err => console.error(err));
-``` 
-**روش دوم یکم واضح‌تره، نه؟**   
+  .then((values) => values.map((value) => value * 2))
+  .then((v) => console.log(v))
+  .catch((err) => console.error(err))
+```
+
+**روش دوم یکم واضح‌تره، نه؟**  
 روشی که از
 `async/await`
 استفاده میکنه زمانی که برای هر مقدار
@@ -492,7 +531,7 @@ Promiseها
 Promiseها
 خیلی سریع تکمیل میشن و در نهایت کل فرآیند سریع‌تر از زمانیه که بخوای به طور متوالی انجامش بدی.
 
-**داستان `filter` چیه؟ مطمئنا یه چیزی این وسط اشتباهه...**   
+**داستان `filter` چیه؟ مطمئنا یه چیزی این وسط اشتباهه...**  
 خب، درست حدس زدی: اگرچه مقادیر برگشتی از این قراره:
 `[ false, true, false, true ]`
 اما هرکدومشون توی یه
@@ -517,6 +556,7 @@ Promise
 استفاده کنی.
 
 ## بازنویسی اپلیکیشن‌های برپایه‌ی callback
+
 توابع
 async
 به طور پیشفرض یه
@@ -538,13 +578,15 @@ Promise
 استفاده کنی.
 
 ## بازنویسی اپلیکیشن‌های برپایه‌ی Promise
+
 زنجیره‌های ساده‌ی
 `then.`
 رو خیلی سرراست میشه با استفاده از
 `async/await`
 بازنویسی کرد.
+
 ```js
-function asyncTask () {
+function asyncTask() {
   return functionA()
     .then((valueA) => functionB(valueA))
     .then((valueB) => functionC(valueB))
@@ -552,30 +594,33 @@ function asyncTask () {
     .catch((err) => logger.error(err))
 }
 ```
+
 تبدیل میشه به:
+
 ```js
-async function asyncTask () {
+async function asyncTask() {
   try {
-    const valueA = await functionA();
-    const valueB = await functionB(valueA);
-    const valueC = await functionC(valueB);
-    return await functionD(valueC);
+    const valueA = await functionA()
+    const valueB = await functionB(valueA)
+    const valueC = await functionC(valueB)
+    return await functionD(valueC)
   } catch (err) {
-    logger.error(err);
+    logger.error(err)
   }
 }
 ```
 
 ## اپلیکیشن‌های Node.js رو با `async/await` بازنویسی کن اگه:
-* مفاهیم قدیمی و باحالی مثل شرط‌های
-`if-else`
-و حلقه‌های
-`for/while`
-رو دوس داری.
 
-* باور داری که بلوک‌های
-`try-catch`
-راه درست رسیدگی به خطاهاست.
+- مفاهیم قدیمی و باحالی مثل شرط‌های
+  `if-else`
+  و حلقه‌های
+  `for/while`
+  رو دوس داری.
+
+- باور داری که بلوک‌های
+  `try-catch`
+  راه درست رسیدگی به خطاهاست.
 
 همونطور که باهم دیدیم، استفاده از
 `async/await`
@@ -585,7 +630,7 @@ async function asyncTask () {
 
 ---
 
-منبع: 
+منبع:
 [Rewriting Node.js apps with async/await](https://blog.risingstack.com/mastering-async-await-in-nodejs/)
 از وبلاگ
 RisingStack
