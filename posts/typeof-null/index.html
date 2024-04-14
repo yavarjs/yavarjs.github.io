@@ -1,25 +1,23 @@
-<!doctype html><html dir=rtl lang=fa><head><title>تاریخچه typeof null در جاوااسکریپت | یاvar</title><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><meta name=viewport content="width=device-width,minimum-scale=1"><meta name=description content="هدف این نوشته معرفی یه مثاله برای این که چجوری یه اپلیکیشن
-Node.js
-رو به یه کانتینر
-Docker
-تبدیل کنی. این راهنما برای زمان توسعه اپ هست و نه برای
-استقرار اپ برای
-production.
-همچنین فرض میکنم که یه
-
-    نسخه‌ی نصب شده از داکر
-
-روی سیستمت هست و یه دانش ابتدایی از ساختار یه اپلیکیشن
-Node.js
-داری."><meta name=generator content="Hugo 0.83.1"><meta name=ROBOTS content="NOINDEX, NOFOLLOW"><meta name=author content="حمیدرضا مهدوی پناه"><meta name=keywords content="web app,داکر,نود جی‌اس,node.js,docker"><link href=https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v28.0.0/dist/font-face.css rel=stylesheet type=text/css><link rel=stylesheet href=/css/style.css><script async src="https://www.googletagmanager.com/gtag/js?id=G-TB5X9PJPXB"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','G-TB5X9PJPXB')</script></head><body><nav class=navigation><a href=/>خانه <span class=arrow>→</span></a>
+<!doctype html><html dir=rtl lang=fa><head><title>تاریخچه typeof null در جاوااسکریپت | یاvar</title>
+<meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1"><meta name=viewport content="width=device-width,minimum-scale=1"><meta name=description content='خروجی
+‍‍‍‍typeof null
+توی جاوااسکریپت برابر میشه با
+"object"
+که به نادرستی این معنی رو منتقل میکنه که
+null
+یه آبجکت (شیء) هست (در صورتی که نیست.
+null
+یه
+primitive value
+یا مقدار اولیه هست). این یه باگه و چون کدهای فعلی از کار می‌افتن نمیشه رفعش کرد.'><meta name=generator content="Hugo 0.124.1"><meta name=ROBOTS content="NOINDEX, NOFOLLOW"><meta name=author content="حمیدرضا مهدوی پناه"><meta name=keywords content="js,جاوااسکریپت,javascript,null,typeof,در اعماق"><link href=https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v28.0.0/dist/font-face.css rel=stylesheet type=text/css><link rel=stylesheet href=/css/style.css><link rel=stylesheet href=http://yavarjs.ir/css/custom.css><link rel="shortcut icon" href=/images/favicon.ico type=image/x-icon><script async src="https://www.googletagmanager.com/gtag/js?id=G-TB5X9PJPXB"></script><script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-TB5X9PJPXB",{anonymize_ip:!1})}</script></head><body><nav class=navigation><a href=/>خانه <span class=arrow>→</span></a>
 <a href=/tags>برچسب‌ها</a>
-<a href=/about>درباره یاvar</a></nav><main class=main><section id=single><h1 class=title>تاریخچه typeof null در جاوااسکریپت</h1><div class=tip><span>حمیدرضا مهدوی پناه</span>
-<span class=split>·</span>
-<span>خواندن 2 دقیقه</span>
-<span class=split>·</span>
-<span>426 کلمه</span>
-<span class=split>·</span>
-<span>۱۴۰۰/۲/۱</span></div><div class=content><p>خروجی
+<a href=/about>درباره یاvar</a></nav><main class=main><section id=single><h1 class=title>تاریخچه typeof null در جاوااسکریپت</h1><div class=tip><span>حمیدرضا مهدوی پناه
+</span><span class=split>·
+</span><span>خواندن 2 دقیقه
+</span><span class=split>·
+</span><span>426 کلمه
+</span><span class=split>·
+</span><span>۱۴۰۰/۲/۱</span></div><div class=content><p>خروجی
 ‍‍‍‍<code>typeof null</code>
 توی جاوااسکریپت برابر میشه با
 <code>"object"</code>
@@ -64,14 +62,14 @@ double
 <code>typeof null</code>
 خروجی آبجکت رو پاسخ میده: چون برچسبِ نوع داده رو چک میکنه و میبینه که برابر با آبجکت هست. کد اولین موتور جاوااسکریپت برای
 <em>typeof</em>:
-<script type=application/javascript src=https://gist.github.com/mahdavipanah/e74e1269660aa23bdf6f57ea74f0de71.js></script>گام‌هایی که کد بالا طی میکنه:</p><ul><li>گام (1): موتور بررسی میکنه که آیا مقدار
+<script src=https://gist.github.com/mahdavipanah/e74e1269660aa23bdf6f57ea74f0de71.js></script>گام‌هایی که کد بالا طی میکنه:</p><ul><li>گام (1): موتور بررسی میکنه که آیا مقدار
 <strong>v</strong>
 برابر با
 <em>undefined</em>
 یا همون
 <em>JSVAL_VOID</em>
-هست یا نه. این بررسی با یه دستور برابر انجام میشه:</li></ul><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-C data-lang=C><span style=color:#999;font-weight:700;font-style:italic>#define JSVAL_IS_VOID(v)  ((v) == JSVAL_VOID)
-</span></code></pre></div><ul><li>بررسی بعدی (2) اینه که آیا مقدار مورد نظر، برچسب آبجکت داره یا نه. علاوه‌بر این اگه مقدار
+هست یا نه. این بررسی با یه دستور برابر انجام میشه:</li></ul><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-C data-lang=C><span style=display:flex><span><span style=color:#999;font-weight:700;font-style:italic>#define JSVAL_IS_VOID(v)  ((v) == JSVAL_VOID)
+</span></span></span></code></pre></div><ul><li>بررسی بعدی (2) اینه که آیا مقدار مورد نظر، برچسب آبجکت داره یا نه. علاوه‌بر این اگه مقدار
 <strong>v</strong>
 قابل صدا‌زدنه یا به عبارتی
 callable
@@ -87,11 +85,11 @@ callable
 <em>null</em>
 وجود نداره، که میتونست خیلی راحت با یه ماکرو
 C
-انجام بشه:</li></ul><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-C data-lang=C><span style=color:#999;font-weight:700;font-style:italic>#define JSVAL_IS_NULL(v)  ((v) == JSVAL_NULL)
-</span></code></pre></div><p>این باگ شاید خیلی واضح به نظر بیاد، اما نباید فراموش کرد که برای نوشتن اولین نسخه‌ی جاوااسکریپت زمان خیلی کمی در اختیارشون بوده!</p><hr><p>منبع:
+انجام بشه:</li></ul><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-C data-lang=C><span style=display:flex><span><span style=color:#999;font-weight:700;font-style:italic>#define JSVAL_IS_NULL(v)  ((v) == JSVAL_NULL)
+</span></span></span></code></pre></div><p>این باگ شاید خیلی واضح به نظر بیاد، اما نباید فراموش کرد که برای نوشتن اولین نسخه‌ی جاوااسکریپت زمان خیلی کمی در اختیارشون بوده!</p><hr><p>منبع:
 <a href=https://2ality.com/2013/10/typeof-null.html target=_blank rel=noopener>The history of typeof null</a>
 از وبلاگ
 2ality - JavaScript and more</p></div><div class=tags><a href=http://yavarjs.ir/tags/javascript>javascript</a>
 <a href=http://yavarjs.ir/tags/null>null</a>
 <a href=http://yavarjs.ir/tags/typeof>typeof</a>
-<a href=http://yavarjs.ir/tags/%D8%AF%D8%B1-%D8%A7%D8%B9%D9%85%D8%A7%D9%82>در اعماق</a></div><script src=https://utteranc.es/client.js repo=yavarjs/utterances-comments issue-term=pathname theme=github-light crossorigin=anonymous async></script></section></main><footer id=footer><p class=copyright>مطالب با اشاره به یاvar به عنوان منبع قابل انتشارن.</p><p class=powerby>قدرت‌گرفته از <a href=http://www.gohugo.io/>Hugo</a> با تم <a href=https://github.com/yavarjs/hugo-theme-mini>mini</a></p></footer></body></html>
+<a href=http://yavarjs.ir/tags/%D8%AF%D8%B1-%D8%A7%D8%B9%D9%85%D8%A7%D9%82>در اعماق</a></div><script src=https://utteranc.es/client.js repo=yavarjs/utterances-comments issue-term=pathname theme=github-light crossorigin=anonymous async></script></section></main><footer id=footer><div class=copyright>مطالب با اشاره به یاvar به عنوان منبع قابل انتشارن.</p><p class=powerby>قدرت‌گرفته از <a href=http://www.gohugo.io/>Hugo</a> با تم <a href=https://github.com/yavarjs/hugo-theme-mini>mini</a></p></footer></body></html>

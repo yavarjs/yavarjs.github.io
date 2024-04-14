@@ -1,6 +1,10 @@
+html[theme="dark-mode"] {
+  filter: invert(1) hue-rotate(180deg);
+}
+
 body {
   line-height: 1;
-  font-family: 'Vazir', sans-serif;
+  font-family: "Vazir", sans-serif;
   font: normal 15px/1.5em;
   color: #404040;
   line-height: 1.75;
@@ -41,19 +45,22 @@ table {
   line-height: 1.5em;
 }
 
-th, td {
+th,
+td {
   text-align: left;
   padding-right: 20px;
   vertical-align: top;
 }
 
-table td, td {
+table td,
+td {
   border-spacing: none;
   border-style: solid;
   padding: 10px 15px;
   border-width: 1px 0 0 0;
 }
-thead th, th {
+thead th,
+th {
   text-align: left;
   padding: 10px 15px;
   height: 20px;
@@ -65,11 +72,11 @@ thead th, th {
   border: 1px solid #dadadc;
 }
 
-tr>td {
+tr > td {
   border: 1px solid #dadadc;
 }
 
-tr:nth-child(odd)>td {
+tr:nth-child(odd) > td {
   background: #fcfcfc;
 }
 
@@ -82,23 +89,23 @@ p {
   margin-block-start: 1.5em;
   margin-block-end: 1.5em;
 }
-
 .markdown-image img {
   max-width: 100%;
 }
-.anchor { 
-  font-size: 100%; 
-  visibility: hidden; 
-  color:silver;
+.anchor {
+  font-size: 100%;
+  visibility: hidden;
+  color: silver;
 }
 h1:hover a,
 h2:hover a,
 h3:hover a,
-h4:hover a { 
-  visibility: visible
+h4:hover a {
+  visibility: visible;
 }
 .highlight pre {
   padding: 7px;
+  overflow-x: auto;
 }
 
 .highlight {
@@ -107,7 +114,8 @@ h4:hover a {
   overflow-x: auto;
 }
 p code {
-  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace;
+  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier,
+    monospace;
   font-size: inherit;
   background-color: rgba(0, 0, 0, 0.06);
   padding: 0 2px;
@@ -118,9 +126,9 @@ p code {
   text-indent: 0;
 }
 pre code {
-  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace;
+  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier,
+    monospace;
 }
-
 
 /* navigation */
 
@@ -177,6 +185,29 @@ nav.navigation a.button {
   }
 }
 
+/* toc */
+.toc {
+  margin: auto;
+  background: #f8f8f8;
+  border-radius: 0;
+  padding: 10px 7px;
+  margin-top: 36px;
+}
+.toc details summary {
+  cursor: zoom-in;
+  margin-inline-start: 14px;
+  font-weight: 500;
+}
+.toc details[open] summary {
+  cursor: zoom-out;
+}
+.toc #TableOfContents {
+  margin-left: 10px;
+}
+.toc ul {
+  padding-inline-start: 24px;
+}
+
 /* comment */
 #comment {
   margin-top: 64px;
@@ -204,7 +235,7 @@ nav.navigation a.button {
 #footer .split:hover path {
   fill: #ff3356;
   transition: 0.7s ease-out;
-  cursor: pointer;;
+  cursor: pointer;
 }
 
 #social a {
@@ -255,7 +286,7 @@ nav.navigation a.button {
 }
 
 #list-page .item {
-  margin: 48px 0 0 0;
+  margin: 12px 0;
 }
 
 #list-page .title {
@@ -370,7 +401,6 @@ nav.navigation a.button {
   color: #0366d6;
 }
 
-
 #archive {
   max-width: 580px;
   margin: 0 auto;
@@ -382,7 +412,7 @@ nav.navigation a.button {
 }
 
 #archive .group {
-  margin: 24px auto; 
+  margin: 24px auto;
 }
 #archive .group .key {
   font-size: 20px;
@@ -396,13 +426,13 @@ nav.navigation a.button {
 #archive .group .value .date {
   display: inline-block;
   color: #999;
-  width: 60px;
+  min-width: 60px;
 }
 #archive .group .value .title {
   display: inline;
 }
 #archive .group .value .title a {
-  color:#404040;
+  color: #404040;
   float: right;
 }
 #archive .group .value .title a:hover {

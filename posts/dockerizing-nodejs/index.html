@@ -1,4 +1,5 @@
-<!doctype html><html dir=rtl lang=fa><head><title>تنظیم Docker برای یه وب‌اپ Node.js | یاvar</title><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><meta name=viewport content="width=device-width,minimum-scale=1"><meta name=description content="هدف این نوشته معرفی یه مثاله برای این که چجوری یه اپلیکیشن
+<!doctype html><html dir=rtl lang=fa><head><title>تنظیم Docker برای یه وب‌اپ Node.js | یاvar</title>
+<meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1"><meta name=viewport content="width=device-width,minimum-scale=1"><meta name=description content="هدف این نوشته معرفی یه مثاله برای این که چجوری یه اپلیکیشن
 Node.js
 رو به یه کانتینر
 Docker
@@ -6,20 +7,18 @@ Docker
 استقرار اپ برای
 production.
 همچنین فرض میکنم که یه
-
-    نسخه‌ی نصب شده از داکر
-
+نسخه‌ی نصب شده از داکر
 روی سیستمت هست و یه دانش ابتدایی از ساختار یه اپلیکیشن
 Node.js
-داری."><meta name=generator content="Hugo 0.83.1"><meta name=ROBOTS content="NOINDEX, NOFOLLOW"><meta name=author content="حمیدرضا مهدوی پناه"><meta name=keywords content="web app,داکر,نود جی‌اس,node.js,docker"><link href=https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v28.0.0/dist/font-face.css rel=stylesheet type=text/css><link rel=stylesheet href=/css/style.css><script async src="https://www.googletagmanager.com/gtag/js?id=G-TB5X9PJPXB"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','G-TB5X9PJPXB')</script></head><body><nav class=navigation><a href=/>خانه <span class=arrow>→</span></a>
+داری."><meta name=generator content="Hugo 0.124.1"><meta name=ROBOTS content="NOINDEX, NOFOLLOW"><meta name=author content="حمیدرضا مهدوی پناه"><meta name=keywords content="web app,داکر,نود جی‌اس,node.js,docker"><link href=https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v28.0.0/dist/font-face.css rel=stylesheet type=text/css><link rel=stylesheet href=/css/style.css><link rel=stylesheet href=http://yavarjs.ir/css/custom.css><link rel="shortcut icon" href=/images/favicon.ico type=image/x-icon><script async src="https://www.googletagmanager.com/gtag/js?id=G-TB5X9PJPXB"></script><script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-TB5X9PJPXB",{anonymize_ip:!1})}</script></head><body><nav class=navigation><a href=/>خانه <span class=arrow>→</span></a>
 <a href=/tags>برچسب‌ها</a>
-<a href=/about>درباره یاvar</a></nav><main class=main><section id=single><h1 class=title>تنظیم Docker برای یه وب‌اپ Node.js</h1><div class=tip><span>حمیدرضا مهدوی پناه</span>
-<span class=split>·</span>
-<span>خواندن 5 دقیقه</span>
-<span class=split>·</span>
-<span>1007 کلمه</span>
-<span class=split>·</span>
-<span>۱۴۰۰/۲/۹</span></div><div class=content><p>هدف این نوشته معرفی یه مثاله برای این که چجوری یه اپلیکیشن
+<a href=/about>درباره یاvar</a></nav><main class=main><section id=single><h1 class=title>تنظیم Docker برای یه وب‌اپ Node.js</h1><div class=tip><span>حمیدرضا مهدوی پناه
+</span><span class=split>·
+</span><span>خواندن 5 دقیقه
+</span><span class=split>·
+</span><span>1037 کلمه
+</span><span class=split>·
+</span><span>۱۴۰۰/۲/۹</span></div><aside class=toc><details><summary>فهرست</summary><div><nav id=TableOfContents><ul><li><a href=#ساخت-اپ-nodejs>ساخت اپ Node.js</a></li><li><a href=#ایجاد-یه-dockerfile>ایجاد یه Dockerfile</a></li><li><a href=#فایل-dockerignore>فایل dockerignore.</a></li><li><a href=#ساخت-image>ساخت image</a></li><li><a href=#اجرای-image>اجرای image</a></li><li><a href=#تست>تست</a></li></ul></nav></div></details></aside><div class=content><p>هدف این نوشته معرفی یه مثاله برای این که چجوری یه اپلیکیشن
 Node.js
 رو به یه کانتینر
 Docker
@@ -48,20 +47,20 @@ image
 image
 هست.</p><h2 id=ساخت-اپ-nodejs>ساخت اپ Node.js <a href=#%d8%b3%d8%a7%d8%ae%d8%aa-%d8%a7%d9%be-nodejs class=anchor>🔗</a></h2><p>در ابتدا یه فولدر بساز که تمام فایلها قراره اونجا زندگی کنن. توی این فولدر یه فایل
 <code>package.json</code>
-بساز که توضیحاتیه درمورد اپ و وابستگی‌هاش:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
-  <span style=color:navy>&#34;name&#34;</span>: <span style=color:#d14>&#34;docker_web_app&#34;</span>,
-  <span style=color:navy>&#34;version&#34;</span>: <span style=color:#d14>&#34;1.0.0&#34;</span>,
-  <span style=color:navy>&#34;description&#34;</span>: <span style=color:#d14>&#34;Node.js on Docker&#34;</span>,
-  <span style=color:navy>&#34;author&#34;</span>: <span style=color:#d14>&#34;First Last &lt;first.last@example.com&gt;&#34;</span>,
-  <span style=color:navy>&#34;main&#34;</span>: <span style=color:#d14>&#34;server.js&#34;</span>,
-  <span style=color:navy>&#34;scripts&#34;</span>: {
-    <span style=color:navy>&#34;start&#34;</span>: <span style=color:#d14>&#34;node server.js&#34;</span>
-  },
-  <span style=color:navy>&#34;dependencies&#34;</span>: {
-    <span style=color:navy>&#34;express&#34;</span>: <span style=color:#d14>&#34;^4.16.1&#34;</span>
-  }
-}
-</code></pre></div><p>دستور
+بساز که توضیحاتیه درمورد اپ و وابستگی‌هاش:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:navy>&#34;name&#34;</span>: <span style=color:#d14>&#34;docker_web_app&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:navy>&#34;version&#34;</span>: <span style=color:#d14>&#34;1.0.0&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:navy>&#34;description&#34;</span>: <span style=color:#d14>&#34;Node.js on Docker&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:navy>&#34;author&#34;</span>: <span style=color:#d14>&#34;First Last &lt;first.last@example.com&gt;&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:navy>&#34;main&#34;</span>: <span style=color:#d14>&#34;server.js&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:navy>&#34;scripts&#34;</span>: {
+</span></span><span style=display:flex><span>    <span style=color:navy>&#34;start&#34;</span>: <span style=color:#d14>&#34;node server.js&#34;</span>
+</span></span><span style=display:flex><span>  },
+</span></span><span style=display:flex><span>  <span style=color:navy>&#34;dependencies&#34;</span>: {
+</span></span><span style=display:flex><span>    <span style=color:navy>&#34;express&#34;</span>: <span style=color:#d14>&#34;^4.16.1&#34;</span>
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>دستور
 <code>npm install</code>
 رو اجرا کن. اگه از نسخه‌ی ۵ به بالای
 <code>npm</code>
@@ -73,27 +72,27 @@ image
 <code>server.js</code>
 بساز که یه وب‌اپ رو شامل میشه که از فریمورک
 <a href=https://expressjs.com/ target=_blank rel=noopener>Express.js</a>
-استفاده میکنه:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#d14>&#39;use strict&#39;</span>;
-
-<span style=color:#000;font-weight:700>const</span> express <span style=color:#000;font-weight:700>=</span> require(<span style=color:#d14>&#39;express&#39;</span>);
-
-<span style=color:#998;font-style:italic>// مقادیر ثابت
-</span><span style=color:#998;font-style:italic></span><span style=color:#000;font-weight:700>const</span> PORT <span style=color:#000;font-weight:700>=</span> <span style=color:#099>8080</span>;
-<span style=color:#000;font-weight:700>const</span> HOST <span style=color:#000;font-weight:700>=</span> <span style=color:#d14>&#39;0.0.0.0&#39;</span>;
-
-<span style=color:#998;font-style:italic>// اپ
-</span><span style=color:#998;font-style:italic></span><span style=color:#000;font-weight:700>const</span> app <span style=color:#000;font-weight:700>=</span> express();
-app.get(<span style=color:#d14>&#39;/&#39;</span>, (req, res) =&gt; {
-  res.send(<span style=color:#d14>&#39;Hello World&#39;</span>);
-});
-
-app.listen(PORT, HOST);
-console.log(<span style=color:#d14>`Running on http://</span><span style=color:#d14>${</span>HOST<span style=color:#d14>}</span><span style=color:#d14>:</span><span style=color:#d14>${</span>PORT<span style=color:#d14>}</span><span style=color:#d14>`</span>);
-</code></pre></div><p>توی مراحل بعدی، میبینی که چجوری میتونی این اپ رو با استفاده از ایمیج رسمی داکر، داخل یه کانتینر اجراش کنی. اول از همه نیاز داری تا یه
+استفاده میکنه:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#d14>&#39;use strict&#39;</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#000;font-weight:700>const</span> express <span style=color:#000;font-weight:700>=</span> require(<span style=color:#d14>&#39;express&#39;</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#998;font-style:italic>// مقادیر ثابت
+</span></span></span><span style=display:flex><span><span style=color:#998;font-style:italic></span><span style=color:#000;font-weight:700>const</span> PORT <span style=color:#000;font-weight:700>=</span> <span style=color:#099>8080</span>;
+</span></span><span style=display:flex><span><span style=color:#000;font-weight:700>const</span> HOST <span style=color:#000;font-weight:700>=</span> <span style=color:#d14>&#39;0.0.0.0&#39;</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#998;font-style:italic>// اپ
+</span></span></span><span style=display:flex><span><span style=color:#998;font-style:italic></span><span style=color:#000;font-weight:700>const</span> app <span style=color:#000;font-weight:700>=</span> express();
+</span></span><span style=display:flex><span>app.get(<span style=color:#d14>&#39;/&#39;</span>, (req, res) =&gt; {
+</span></span><span style=display:flex><span>  res.send(<span style=color:#d14>&#39;Hello World&#39;</span>);
+</span></span><span style=display:flex><span>});
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>app.listen(PORT, HOST);
+</span></span><span style=display:flex><span>console.log(<span style=color:#d14>`Running on http://</span><span style=color:#d14>${</span>HOST<span style=color:#d14>}</span><span style=color:#d14>:</span><span style=color:#d14>${</span>PORT<span style=color:#d14>}</span><span style=color:#d14>`</span>);
+</span></span></code></pre></div><p>توی مراحل بعدی، میبینی که چجوری میتونی این اپ رو با استفاده از ایمیج رسمی داکر، داخل یه کانتینر اجراش کنی. اول از همه نیاز داری تا یه
 Docker image
 برای اپلیکیشنت بسازی.</p><h2 id=ایجاد-یه-dockerfile>ایجاد یه Dockerfile <a href=#%d8%a7%db%8c%d8%ac%d8%a7%d8%af-%db%8c%d9%87-dockerfile class=anchor>🔗</a></h2><p>یه فایل خالی بساز که اسمش هست
-<code>Dockerfile</code>:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>touch Dockerfile
-</code></pre></div><p>این فایل رو داخل ادیتور مورد علاقت باز کن.</p><p>اولین کار اینه که ببینیم از چه ایمیجی کارمون رو شروع کنیم. اینجا از آخرین نسخه‌ی پشتیبانی بلندمدت
+<code>Dockerfile</code>:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>touch Dockerfile
+</span></span></code></pre></div><p>این فایل رو داخل ادیتور مورد علاقت باز کن.</p><p>اولین کار اینه که ببینیم از چه ایمیجی کارمون رو شروع کنیم. اینجا از آخرین نسخه‌ی پشتیبانی بلندمدت
 (LTS)
 استفاده میکنیم که میشه نسخه‌ی
 ‍<code>14</code>
@@ -101,12 +100,12 @@ Docker image
 <code>node</code>
 که در مخزن
 <a href=https://hub.docker.com/_/node target=_blank rel=noopener>Docker Hub</a>
-موجوده:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-docker data-lang=docker><span style=color:#000;font-weight:700>FROM</span><span style=color:#d14> node:14</span><span style=color:#a61717;background-color:#e3d2d2>
-</span></code></pre></div><p>سپس توی ایمیج یه فولدر بساز که داخلش کدهای اپلیکیشن رو قرار بدی، این فولدر قراره فولدر کاری
+موجوده:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-docker data-lang=docker><span style=display:flex><span><span style=color:#000;font-weight:700>FROM</span><span style=color:#d14> node:14</span><span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span></code></pre></div><p>سپس توی ایمیج یه فولدر بساز که داخلش کدهای اپلیکیشن رو قرار بدی، این فولدر قراره فولدر کاری
 (working directory)
-برای اپلیکیشنت باشه:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-docker data-lang=docker><span style=color:#998;font-style:italic># رو بساز app دایرکتوری</span><span style=color:#a61717;background-color:#e3d2d2>
-</span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#000;font-weight:700>WORKDIR</span><span style=color:#d14> /usr/src/app</span><span style=color:#a61717;background-color:#e3d2d2>
-</span></code></pre></div><p>ایمیج
+برای اپلیکیشنت باشه:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-docker data-lang=docker><span style=display:flex><span><span style=color:#998;font-style:italic># رو بساز app دایرکتوری</span><span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span><span style=display:flex><span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#000;font-weight:700>WORKDIR</span><span style=color:#d14> /usr/src/app</span><span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span></code></pre></div><p>ایمیج
 (node:14)
 از قبل داخلش
 Node.js
@@ -119,120 +118,118 @@ NPM
 استفاده میکنی، فایل
 <code>package-lock.json</code>
 ساخته
-<em>نمیشه</em>.</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-docker data-lang=docker><span style=color:#998;font-style:italic># وابستگی‌های اپ رو نصب کن</span><span style=color:#a61717;background-color:#e3d2d2>
-</span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#998;font-style:italic># از علامت ستاره استفاده شده تا هم فایل قفل و هم فایل عادی کپی بشه</span><span style=color:#a61717;background-color:#e3d2d2>
-</span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#000;font-weight:700>COPY</span> package*.json ./<span style=color:#a61717;background-color:#e3d2d2>
-</span><span style=color:#a61717;background-color:#e3d2d2>
-</span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#000;font-weight:700>RUN</span> npm install<span style=color:#a61717;background-color:#e3d2d2>
-</span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#998;font-style:italic># اگه داری اپلیکیشن رو برای پروداکشن میسازی از دستور زیر استفاده کن</span><span style=color:#a61717;background-color:#e3d2d2>
-</span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#998;font-style:italic># RUN npm ci --only=production</span><span style=color:#a61717;background-color:#e3d2d2>
-</span></code></pre></div><p>دقت کن که به جای کپی کردن کل فولدر کاریمون، فقط فایل
+<em>نمیشه</em>.</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-docker data-lang=docker><span style=display:flex><span><span style=color:#998;font-style:italic># وابستگی‌های اپ رو نصب کن</span><span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span><span style=display:flex><span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#998;font-style:italic># از علامت ستاره استفاده شده تا هم فایل قفل و هم فایل عادی کپی بشه</span><span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span><span style=display:flex><span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#000;font-weight:700>COPY</span> package*.json ./<span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span><span style=display:flex><span><span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span><span style=display:flex><span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#000;font-weight:700>RUN</span> npm install<span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span><span style=display:flex><span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#998;font-style:italic># اگه داری اپلیکیشن رو برای پروداکشن میسازی از دستور زیر استفاده کن</span><span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span><span style=display:flex><span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#998;font-style:italic># RUN npm ci --only=production</span><span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span></code></pre></div><p>دقت کن که به جای کپی کردن کل فولدر کاریمون، فقط فایل
 <code>package.json</code>
 رو کپی کردیم. این کار بهمون اجازه میده تا از مزیت لایه‌های قابل کش در داکر استفاده کنیم
-(<a href=http://bitjudo.com/blog/2014/03/13/building-efficient-dockerfiles-node-dot-js/ target=_blank rel=noopener>
-بیشتر بخوانید
-</a>).
+(<a href=http://bitjudo.com/blog/2014/03/13/building-efficient-dockerfiles-node-dot-js/ target=_blank rel=noopener>بیشتر بخوانید</a>).
 علاوه‌بر این، فرمان
 <code>npm ci</code>
 کمک میکنه که
 build
 های سریعتر، قابل اتکاتر و قابل تکثیر برای محیط‌های پروداکشن بسازیم. در این مورد میتونی <a href=https://blog.npmjs.org/post/171556855892/introducing-npm-ci-for-faster-more-reliable target=_blank rel=noopener>اینجا</a> بیشتر بخونی.</p><p>برای بسته‌بندی کردن سورس‌کدهای اپ توی ایمیج داکر، از دستور
 <code>COPY</code>
-استفاده کن:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-docker data-lang=docker><span style=color:#998;font-style:italic># سورس اپ رو بسته‌بندی کن</span><span style=color:#a61717;background-color:#e3d2d2>
-</span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#000;font-weight:700>COPY</span> . .<span style=color:#a61717;background-color:#e3d2d2>
-</span></code></pre></div><p>اپلیکیشنت خودشو به پورت
+استفاده کن:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-docker data-lang=docker><span style=display:flex><span><span style=color:#998;font-style:italic># سورس اپ رو بسته‌بندی کن</span><span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span><span style=display:flex><span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#000;font-weight:700>COPY</span> . .<span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span></code></pre></div><p>اپلیکیشنت خودشو به پورت
 <code>8080</code>
 میچسبونه، پس از دستور
 <code>EXPOSE</code>
 استفاده کن تا
-داکر این پورت رو برات مپ کنه:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-docker data-lang=docker><span style=color:#000;font-weight:700>EXPOSE</span><span style=color:#d14> 8080</span><span style=color:#a61717;background-color:#e3d2d2>
-</span></code></pre></div><p>در آخر، فرمانی که اپلیکیشنت رو به اجرا درمیاره با استفاده از
+داکر این پورت رو برات مپ کنه:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-docker data-lang=docker><span style=display:flex><span><span style=color:#000;font-weight:700>EXPOSE</span><span style=color:#d14> 8080</span><span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span></code></pre></div><p>در آخر، فرمانی که اپلیکیشنت رو به اجرا درمیاره با استفاده از
 <code>CMD</code>
 تعریف کن. در اینجا ما از
 ‍<code>node server.js</code>
-برای شروع سرور استفاده میکنیم:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-docker data-lang=docker><span style=color:#000;font-weight:700>CMD</span> [ <span style=color:#d14>&#34;node&#34;</span>, <span style=color:#d14>&#34;server.js&#34;</span> ]<span style=color:#a61717;background-color:#e3d2d2>
-</span></code></pre></div><p>فایل
+برای شروع سرور استفاده میکنیم:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-docker data-lang=docker><span style=display:flex><span><span style=color:#000;font-weight:700>CMD</span> [ <span style=color:#d14>&#34;node&#34;</span>, <span style=color:#d14>&#34;server.js&#34;</span> ]<span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span></code></pre></div><p>فایل
 <code>dockerfile</code>
-الان باید اینشکلی باشه:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-docker data-lang=docker><span style=color:#000;font-weight:700>FROM</span><span style=color:#d14> node:14</span><span style=color:#a61717;background-color:#e3d2d2>
-</span><span style=color:#a61717;background-color:#e3d2d2>
-</span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#998;font-style:italic># رو بساز app دایرکتوری</span><span style=color:#a61717;background-color:#e3d2d2>
-</span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#000;font-weight:700>WORKDIR</span><span style=color:#d14> /usr/src/app</span><span style=color:#a61717;background-color:#e3d2d2>
-</span><span style=color:#a61717;background-color:#e3d2d2>
-</span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#998;font-style:italic># وابستگی‌های اپ رو نصب کن</span><span style=color:#a61717;background-color:#e3d2d2>
-</span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#998;font-style:italic># از علامت ستاره استفاده شده تا هم فایل قفل و هم فایل عادی کپی بشه</span><span style=color:#a61717;background-color:#e3d2d2>
-</span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#000;font-weight:700>COPY</span> package*.json ./<span style=color:#a61717;background-color:#e3d2d2>
-</span><span style=color:#a61717;background-color:#e3d2d2>
-</span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#000;font-weight:700>RUN</span> npm install<span style=color:#a61717;background-color:#e3d2d2>
-</span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#998;font-style:italic># اگه داری اپلیکیشن رو برای پروداکشن میسازی از دستور زیر استفاده کن</span><span style=color:#a61717;background-color:#e3d2d2>
-</span><span style=color:#a61717;background-color:#e3d2d2>
-</span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#998;font-style:italic># سورس اپ رو بسته‌بندی کن</span><span style=color:#a61717;background-color:#e3d2d2>
-</span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#000;font-weight:700>COPY</span> . .<span style=color:#a61717;background-color:#e3d2d2>
-</span><span style=color:#a61717;background-color:#e3d2d2>
-</span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#000;font-weight:700>EXPOSE</span><span style=color:#d14> 8080</span><span style=color:#a61717;background-color:#e3d2d2>
-</span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#000;font-weight:700>CMD</span> [ <span style=color:#d14>&#34;node&#34;</span>, <span style=color:#d14>&#34;server.js&#34;</span> ]<span style=color:#a61717;background-color:#e3d2d2>
-</span></code></pre></div><h2 id=فایل-dockerignore>فایل dockerignore. <a href=#%d9%81%d8%a7%db%8c%d9%84-dockerignore class=anchor>🔗</a></h2><p>یه فایل
+الان باید اینشکلی باشه:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-docker data-lang=docker><span style=display:flex><span><span style=color:#000;font-weight:700>FROM</span><span style=color:#d14> node:14</span><span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span><span style=display:flex><span><span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span><span style=display:flex><span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#998;font-style:italic># رو بساز app دایرکتوری</span><span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span><span style=display:flex><span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#000;font-weight:700>WORKDIR</span><span style=color:#d14> /usr/src/app</span><span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span><span style=display:flex><span><span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span><span style=display:flex><span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#998;font-style:italic># وابستگی‌های اپ رو نصب کن</span><span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span><span style=display:flex><span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#998;font-style:italic># از علامت ستاره استفاده شده تا هم فایل قفل و هم فایل عادی کپی بشه</span><span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span><span style=display:flex><span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#000;font-weight:700>COPY</span> package*.json ./<span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span><span style=display:flex><span><span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span><span style=display:flex><span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#000;font-weight:700>RUN</span> npm install<span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span><span style=display:flex><span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#998;font-style:italic># اگه داری اپلیکیشن رو برای پروداکشن میسازی از دستور زیر استفاده کن</span><span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span><span style=display:flex><span><span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span><span style=display:flex><span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#998;font-style:italic># سورس اپ رو بسته‌بندی کن</span><span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span><span style=display:flex><span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#000;font-weight:700>COPY</span> . .<span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span><span style=display:flex><span><span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span><span style=display:flex><span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#000;font-weight:700>EXPOSE</span><span style=color:#d14> 8080</span><span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span><span style=display:flex><span><span style=color:#a61717;background-color:#e3d2d2></span><span style=color:#000;font-weight:700>CMD</span> [ <span style=color:#d14>&#34;node&#34;</span>, <span style=color:#d14>&#34;server.js&#34;</span> ]<span style=color:#a61717;background-color:#e3d2d2>
+</span></span></span></code></pre></div><h2 id=فایل-dockerignore>فایل dockerignore. <a href=#%d9%81%d8%a7%db%8c%d9%84-dockerignore class=anchor>🔗</a></h2><p>یه فایل
 ‍‍<code>dockerignore</code>
 داخل همون فولدری که فایل
 <code>dockerfile</code>
-هست بساز که محتواش ایناس:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>node_modules
-npm-debug.log
-</code></pre></div><p>اینکار باعث میشه که ماژول‌های محلی (ماژول‌هایی که روی سیستم خودت داخل فولدر اپ نصب کردی) و لاگ‌های دیباگ توی ایمیج داکر کپی نشه.</p><h2 id=ساخت-image>ساخت image <a href=#%d8%b3%d8%a7%d8%ae%d8%aa-image class=anchor>🔗</a></h2><p>برو به فولدری که
+هست بساز که محتواش ایناس:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>node_modules
+</span></span><span style=display:flex><span>npm-debug.log
+</span></span></code></pre></div><p>اینکار باعث میشه که ماژول‌های محلی (ماژول‌هایی که روی سیستم خودت داخل فولدر اپ نصب کردی) و لاگ‌های دیباگ توی ایمیج داکر کپی نشه.</p><h2 id=ساخت-image>ساخت image <a href=#%d8%b3%d8%a7%d8%ae%d8%aa-image class=anchor>🔗</a></h2><p>برو به فولدری که
 <code>dockerfile</code>
 داخلشه و فرمان زیر رو اجرا کن تا ایمیج داکر رو بسازه. پرچم
 <code>t-</code>
 یه برچسب به ایمیج میچسبونه که بعدا راحت‌تر بتونی با فرمان
 <code>docker images</code>
-پیداش کنی:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>docker build . -t &lt;your username&gt;/node-web-app
-</code></pre></div><p>حالا باید داکر ایمیجت رو لیست کرده باشه:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ docker images
-
-<span style=color:#998;font-style:italic># مثال</span>
-REPOSITORY                      TAG        ID              CREATED
-node                            <span style=color:#099>14</span>         1934b0b038d1    <span style=color:#099>5</span> days ago
-&lt;your username&gt;/node-web-app    latest     d64d3505b0d2    <span style=color:#099>1</span> minute ago
-</code></pre></div><h2 id=اجرای-image>اجرای image <a href=#%d8%a7%d8%ac%d8%b1%d8%a7%db%8c-image class=anchor>🔗</a></h2><p>اجرا کردن ایمیجل با پرچم
+پیداش کنی:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>docker build . -t &lt;your username&gt;/node-web-app
+</span></span></code></pre></div><p>حالا باید داکر ایمیجت رو لیست کرده باشه:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ docker images
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#998;font-style:italic># مثال</span>
+</span></span><span style=display:flex><span>REPOSITORY                      TAG        ID              CREATED
+</span></span><span style=display:flex><span>node                            <span style=color:#099>14</span>         1934b0b038d1    <span style=color:#099>5</span> days ago
+</span></span><span style=display:flex><span>&lt;your username&gt;/node-web-app    latest     d64d3505b0d2    <span style=color:#099>1</span> minute ago
+</span></span></code></pre></div><h2 id=اجرای-image>اجرای image <a href=#%d8%a7%d8%ac%d8%b1%d8%a7%db%8c-image class=anchor>🔗</a></h2><p>اجرا کردن ایمیجل با پرچم
 <code>d-</code>
 کانتینر رو در پس‌زمینه اجرا میکنه. پرچم
 <code>p-</code>
-یه پورت خصوصی داخل کانتینر رو به یه پورت عمومی ریدایرکت میکنه. ایمیجی که از قبل ساختی رو اجرا کن:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>docker run -p 49160:8080 -d &lt;your username&gt;/node-web-app
-</code></pre></div><p>خروجی اپلیکیشنت رو چاپ کن:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#998;font-style:italic># آیدی کانتینر رو پیدا کن</span>
-$ docker ps
-
-<span style=color:#998;font-style:italic># خروجی اپ رو چاپ کن</span>
-$ docker logs &lt;container id&gt;
-
-<span style=color:#998;font-style:italic># مثال</span>
-Running on http://localhost:8080
-</code></pre></div><p>اگه میخوای بری داخل خود کانتینر، میتونی از فرمان
+یه پورت خصوصی داخل کانتینر رو به یه پورت عمومی ریدایرکت میکنه. ایمیجی که از قبل ساختی رو اجرا کن:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>docker run -p 49160:8080 -d &lt;your username&gt;/node-web-app
+</span></span></code></pre></div><p>خروجی اپلیکیشنت رو چاپ کن:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#998;font-style:italic># آیدی کانتینر رو پیدا کن</span>
+</span></span><span style=display:flex><span>$ docker ps
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#998;font-style:italic># خروجی اپ رو چاپ کن</span>
+</span></span><span style=display:flex><span>$ docker logs &lt;container id&gt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#998;font-style:italic># مثال</span>
+</span></span><span style=display:flex><span>Running on http://localhost:8080
+</span></span></code></pre></div><p>اگه میخوای بری داخل خود کانتینر، میتونی از فرمان
 <code>exec</code>
-استفاده کنی:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#998;font-style:italic># به کانتینر وارد شو</span>
-$ docker <span style=color:#0086b3>exec</span> -it &lt;container id&gt; /bin/bash
-</code></pre></div><h2 id=تست>تست <a href=#%d8%aa%d8%b3%d8%aa class=anchor>🔗</a></h2><p>برای این که اپلیکیشنت رو تست کنی، پورتی رو که داکر مپ کرده پیدا کن:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ docker ps
-
-<span style=color:#998;font-style:italic># مثال</span>
-ID            IMAGE                                COMMAND    ...   PORTS
-ecce33b30ebf  &lt;your username&gt;/node-web-app:latest  npm start  ...   49160-&gt;8080
-</code></pre></div><p>توی مثال بالا، داکر پورت داخلی
+استفاده کنی:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#998;font-style:italic># به کانتینر وارد شو</span>
+</span></span><span style=display:flex><span>$ docker <span style=color:#0086b3>exec</span> -it &lt;container id&gt; /bin/bash
+</span></span></code></pre></div><h2 id=تست>تست <a href=#%d8%aa%d8%b3%d8%aa class=anchor>🔗</a></h2><p>برای این که اپلیکیشنت رو تست کنی، پورتی رو که داکر مپ کرده پیدا کن:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ docker ps
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#998;font-style:italic># مثال</span>
+</span></span><span style=display:flex><span>ID            IMAGE                                COMMAND    ...   PORTS
+</span></span><span style=display:flex><span>ecce33b30ebf  &lt;your username&gt;/node-web-app:latest  npm start  ...   49160-&gt;8080
+</span></span></code></pre></div><p>توی مثال بالا، داکر پورت داخلی
 <code>8080</code>
 کانتینر رو به پورت
 <code>49160</code>
 روی کامپیوترت مپ کرده.</p><p>حالا اپلیکیشنت رو با استفاده از
 <code>curl</code>
-فراخوانی کن:</p><div class=highlight><pre style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ curl -i localhost:49160
-
-HTTP/1.1 <span style=color:#099>200</span> OK
-X-Powered-By: Express
-Content-Type: text/html; <span style=color:teal>charset</span><span style=color:#000;font-weight:700>=</span>utf-8
-Content-Length: <span style=color:#099>12</span>
-ETag: W/<span style=color:#d14>&#34;c-M6tWOb/Y57lesdjQuHeB1P/qTV0&#34;</span>
-Date: Mon, <span style=color:#099>13</span> Nov <span style=color:#099>2017</span> 20:53:59 GMT
-Connection: keep-alive
-
-Hello world
-</code></pre></div><p>امیدوارم این خودآموز بهت کمک کرده باشه که بتونی یه اپلیکیشن ساده
+فراخوانی کن:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ curl -i localhost:49160
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>HTTP/1.1 <span style=color:#099>200</span> OK
+</span></span><span style=display:flex><span>X-Powered-By: Express
+</span></span><span style=display:flex><span>Content-Type: text/html; <span style=color:teal>charset</span><span style=color:#000;font-weight:700>=</span>utf-8
+</span></span><span style=display:flex><span>Content-Length: <span style=color:#099>12</span>
+</span></span><span style=display:flex><span>ETag: W/<span style=color:#d14>&#34;c-M6tWOb/Y57lesdjQuHeB1P/qTV0&#34;</span>
+</span></span><span style=display:flex><span>Date: Mon, <span style=color:#099>13</span> Nov <span style=color:#099>2017</span> 20:53:59 GMT
+</span></span><span style=display:flex><span>Connection: keep-alive
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Hello world
+</span></span></code></pre></div><p>امیدوارم این خودآموز بهت کمک کرده باشه که بتونی یه اپلیکیشن ساده
 Node.js
 رو با
 Docker
 اجرا کنی.</p><hr><p>منبع:
 <a href=https://nodejs.org/en/docs/guides/nodejs-docker-webapp/ target=_blank rel=noopener>Dockerizing a Node.js web app</a>
 از وبسایت رسمی نود جی‌اس</p></div><div class=tags><a href=http://yavarjs.ir/tags/node.js>node.js</a>
-<a href=http://yavarjs.ir/tags/docker>docker</a></div><script src=https://utteranc.es/client.js repo=yavarjs/utterances-comments issue-term=pathname theme=github-light crossorigin=anonymous async></script></section></main><footer id=footer><p class=copyright>مطالب با اشاره به یاvar به عنوان منبع قابل انتشارن.</p><p class=powerby>قدرت‌گرفته از <a href=http://www.gohugo.io/>Hugo</a> با تم <a href=https://github.com/yavarjs/hugo-theme-mini>mini</a></p></footer></body></html>
+<a href=http://yavarjs.ir/tags/docker>docker</a></div><script src=https://utteranc.es/client.js repo=yavarjs/utterances-comments issue-term=pathname theme=github-light crossorigin=anonymous async></script></section></main><footer id=footer><div class=copyright>مطالب با اشاره به یاvar به عنوان منبع قابل انتشارن.</p><p class=powerby>قدرت‌گرفته از <a href=http://www.gohugo.io/>Hugo</a> با تم <a href=https://github.com/yavarjs/hugo-theme-mini>mini</a></p></footer></body></html>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>node.js on یاvar</title><link>http://yavarjs.ir/tags/node.js/</link><description>Recent content in node.js on یاvar</description><generator>Hugo -- gohugo.io</generator><language>fa</language><lastBuildDate>Sun, 02 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://yavarjs.ir/tags/node.js/index.xml" rel="self" type="application/rss+xml"/><item><title>کمربند سیاهِ Async Await در Node.js</title><link>http://yavarjs.ir/posts/mastering-async-await/</link><pubDate>Sun, 02 May 2021 00:00:00 +0000</pubDate><guid>http://yavarjs.ir/posts/mastering-async-await/</guid><description>&lt;p>در این نوشته یاد میگیری که چجوری اپلیکیشن‌های
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Node.js on یاvar</title><link>http://yavarjs.ir/tags/node.js/</link><description>Recent content in Node.js on یاvar</description><generator>Hugo -- gohugo.io</generator><language>fa</language><lastBuildDate>Sun, 02 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://yavarjs.ir/tags/node.js/index.xml" rel="self" type="application/rss+xml"/><item><title>کمربند سیاهِ Async Await در Node.js</title><link>http://yavarjs.ir/posts/mastering-async-await/</link><pubDate>Sun, 02 May 2021 00:00:00 +0000</pubDate><guid>http://yavarjs.ir/posts/mastering-async-await/</guid><description>&lt;p>در این نوشته یاد میگیری که چجوری اپلیکیشن‌های
 Node.jsای
 که با
 callback
@@ -15,13 +15,7 @@ Docker
 استقرار اپ برای
 production.
 همچنین فرض میکنم که یه
-&lt;a
-href="https://docs.docker.com/engine/installation/"
-target="_blank"
-rel="noopener"
->
-نسخه‌ی نصب شده از داکر
-&lt;/a>
+&lt;a href="https://docs.docker.com/engine/installation/" target="_blank" rel="noopener">نسخه‌ی نصب شده از داکر&lt;/a>
 روی سیستمت هست و یه دانش ابتدایی از ساختار یه اپلیکیشن
 Node.js
 داری.&lt;/p></description></item></channel></rss>

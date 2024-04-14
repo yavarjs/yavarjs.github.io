@@ -15,13 +15,7 @@ Docker
 استقرار اپ برای
 production.
 همچنین فرض میکنم که یه
-&lt;a
-href="https://docs.docker.com/engine/installation/"
-target="_blank"
-rel="noopener"
->
-نسخه‌ی نصب شده از داکر
-&lt;/a>
+&lt;a href="https://docs.docker.com/engine/installation/" target="_blank" rel="noopener">نسخه‌ی نصب شده از داکر&lt;/a>
 روی سیستمت هست و یه دانش ابتدایی از ساختار یه اپلیکیشن
 Node.js
 داری.&lt;/p></description></item><item><title>انواع loop برای آرایه‌ها: for و for-in و ()forEach. و for-of</title><link>http://yavarjs.ir/posts/looping-over-arrays/</link><pubDate>Wed, 28 Apr 2021 00:00:00 +0000</pubDate><guid>http://yavarjs.ir/posts/looping-over-arrays/</guid><description>&lt;p>در این نوشته چهار روش مختلف برای استفاده از حلقه‌ها روی آرایه‌ها رو مقایسه می‌کنیم.&lt;/p></description></item><item><title>تاریخچه typeof null در جاوااسکریپت</title><link>http://yavarjs.ir/posts/typeof-null/</link><pubDate>Wed, 21 Apr 2021 00:00:00 +0000</pubDate><guid>http://yavarjs.ir/posts/typeof-null/</guid><description>&lt;p>خروجی
