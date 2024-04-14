@@ -5,38 +5,38 @@
 </span><span class=split>·
 </span><span>خواندن 5 دقیقه
 </span><span class=split>·
-</span><span>1016 کلمه
+</span><span>950 کلمه
 </span><span class=split>·
-</span><span>۱۴۰۰/۲/۹</span></div><aside class=toc><details><summary>فهرست</summary><div><nav id=TableOfContents><ul><li><a href=#فهرست-مطالب>فهرست مطالب</a></li><li><a href=#for-loop>۱ - حلقه‌ی for [جاوااسکریپت ES1]</a></li><li><a href=#for-in-loop>۲ - حلقه‌ی for-in [جاوااسکریپت ES1]</a></li><li><a href=#for-each-loop>۳ - متد ()forEach. [جاوااسکریپت ES5]</a><ul><li><a href=#for-each-loop-workaround>۱.۳ - خارج شدن از ()forEach. - یه راه حل</a></li></ul></li><li><a href=#for-of-loop>۴ - حلقه‌ی for-of [جاوااسکریپت ES6]</a><ul><li><a href=#for-of-loop-objects>۱.۴ - حلقه‌ی for-of و آبجکت‌های iterable</a></li><li><a href=#for-of-loop-indices>۲.۴ - حلقه‌ی for-of و اندیس‌های آرایه</a></li><li><a href=#for-of-loop-entries>۳.۴ - حلقه‌ی for-of و دسترسی همزمان به مقادیر و اندیس‌ها با ()entries.</a></li></ul></li><li><a href=#conclusion>۵ - نتیجه‌گیری</a></li></ul></nav></div></details></aside><div class=content><p>در این نوشته چهار روش مختلف برای استفاده از حلقه‌ها روی آرایه‌ها رو مقایسه می‌کنیم.</p><ul><li>حلقه‌ی for:</li></ul><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#000;font-weight:700>for</span> (<span style=color:#000;font-weight:700>let</span> index<span style=color:#000;font-weight:700>=</span><span style=color:#099>0</span>; index <span style=color:#000;font-weight:700>&lt;</span> someArray.length; index<span style=color:#000;font-weight:700>++</span>) {
-</span></span><span style=display:flex><span>  <span style=color:#000;font-weight:700>const</span> elem <span style=color:#000;font-weight:700>=</span> someArray[index];
+</span><span>۱۴۰۰/۲/۹</span></div><aside class=toc><details><summary>فهرست</summary><div><nav id=TableOfContents><ul><li><a href=#for-loop>۱ - حلقه‌ی for [جاوااسکریپت ES1]</a></li><li><a href=#for-in-loop>۲ - حلقه‌ی for-in [جاوااسکریپت ES1]</a></li><li><a href=#for-each-loop>۳ - متد ()forEach. [جاوااسکریپت ES5]</a><ul><li><a href=#for-each-loop-workaround>۱.۳ - خارج شدن از ()forEach. - یه راه حل</a></li></ul></li><li><a href=#for-of-loop>۴ - حلقه‌ی for-of [جاوااسکریپت ES6]</a><ul><li><a href=#for-of-loop-objects>۱.۴ - حلقه‌ی for-of و آبجکت‌های iterable</a></li><li><a href=#for-of-loop-indices>۲.۴ - حلقه‌ی for-of و اندیس‌های آرایه</a></li><li><a href=#for-of-loop-entries>۳.۴ - حلقه‌ی for-of و دسترسی همزمان به مقادیر و اندیس‌ها با ()entries.</a></li></ul></li><li><a href=#conclusion>۵ - نتیجه‌گیری</a></li></ul></nav></div></details></aside><div class=content><p>در این نوشته چهار روش مختلف برای استفاده از حلقه‌ها روی آرایه‌ها رو مقایسه می‌کنیم.</p><ul><li>حلقه‌ی for:</li></ul><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#000;font-weight:700>for</span> (<span style=color:#000;font-weight:700>let</span> index <span style=color:#000;font-weight:700>=</span> <span style=color:#099>0</span>; index <span style=color:#000;font-weight:700>&lt;</span> someArray.length; index<span style=color:#000;font-weight:700>++</span>) {
+</span></span><span style=display:flex><span>  <span style=color:#000;font-weight:700>const</span> elem <span style=color:#000;font-weight:700>=</span> someArray[index]
 </span></span><span style=display:flex><span>  <span style=color:#998;font-style:italic>// ···
 </span></span></span><span style=display:flex><span><span style=color:#998;font-style:italic></span>}
 </span></span></code></pre></div><ul><li>حلقه‌ی for-in:</li></ul><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#000;font-weight:700>for</span> (<span style=color:#000;font-weight:700>const</span> key <span style=color:#000;font-weight:700>in</span> someArray) {
-</span></span><span style=display:flex><span>  console.log(key);
+</span></span><span style=display:flex><span>  console.log(key)
 </span></span><span style=display:flex><span>}
 </span></span></code></pre></div><ul><li>متد
 ()forEach.
 از کلاس
 Array:</li></ul><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span>someArray.forEach((elem, index) =&gt; {
-</span></span><span style=display:flex><span>  console.log(elem, index);
-</span></span><span style=display:flex><span>});
+</span></span><span style=display:flex><span>  console.log(elem, index)
+</span></span><span style=display:flex><span>})
 </span></span></code></pre></div><ul><li>حلقه‌ی for-of:</li></ul><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#000;font-weight:700>for</span> (<span style=color:#000;font-weight:700>const</span> elem <span style=color:#000;font-weight:700>of</span> someArray) {
-</span></span><span style=display:flex><span>  console.log(elem);
+</span></span><span style=display:flex><span>  console.log(elem)
 </span></span><span style=display:flex><span>}
 </span></span></code></pre></div><p>for-of
-در اغلب موارد بهترین انتخابه. در ادامه میبینم چرا.</p><hr><h2 id=فهرست-مطالب>فهرست مطالب <a href=#%d9%81%d9%87%d8%b1%d8%b3%d8%aa-%d9%85%d8%b7%d8%a7%d9%84%d8%a8 class=anchor>🔗</a></h2><ul><li><a href=#for-loop>۱ - حلقه‌ی for [جاوااسکریپت ES1]</a></li><li><a href=#for-in-loop>۲ - حلقه‌ی for-in [جاوااسکریپت ES1]</a></li><li><a href=#for-each-loop>۳ - متد ()forEach. [جاوااسکریپت ES5]</a><ul><li><a href=#for-each-loop-workaround>۱.۳ - خارج شدن از ()forEach. - یه راه حل</a></li></ul></li><li><a href=#for-of-loop>۴ - حلقه‌ی for-if [جاوااسکریپت ES6]</a><ul><li><a href=#for-of-loop-objects>۱.۴ - حلقه‌ی for-of و آبجکت‌های iterable</a></li><li><a href=#for-of-loop-indices>۲.۴ - حلقه‌ی for-of و اندیس‌های آرایه</a></li><li><a href=#for-of-loop-entries>۳.۴ - حلقه‌ی for-of و دسترسی همزمان به مقادیر و اندیس‌ها با ()entries.</a></li></ul></li><li><a href=#conclusion>۵ - نتیجه‌گیری</a></li></ul><hr><h2 id=for-loop>۱ - حلقه‌ی for [جاوااسکریپت ES1] <a href=#for-loop class=anchor>🔗</a></h2><p>حلقه‌ی ساده
+در اغلب موارد بهترین انتخابه. در ادامه میبینم چرا.</p><hr><h2 id=for-loop>۱ - حلقه‌ی for [جاوااسکریپت ES1] <a href=#for-loop class=anchor>🔗</a></h2><p>حلقه‌ی ساده
 for
 در جاوااسکریپت قدمت داره و از نسخه‌ی ۱
 ECMAScript
 وجود داشته.
 حلقه زیر اندیس و مقدار هر عنصر آرایه
 <em>arr</em>
-رو چاپ میکنه:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#000;font-weight:700>const</span> arr <span style=color:#000;font-weight:700>=</span> [<span style=color:#d14>&#39;a&#39;</span>, <span style=color:#d14>&#39;b&#39;</span>, <span style=color:#d14>&#39;c&#39;</span>];
-</span></span><span style=display:flex><span>arr.prop <span style=color:#000;font-weight:700>=</span> <span style=color:#d14>&#39;property value&#39;</span>;
+رو چاپ میکنه:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#000;font-weight:700>const</span> arr <span style=color:#000;font-weight:700>=</span> [<span style=color:#d14>&#34;a&#34;</span>, <span style=color:#d14>&#34;b&#34;</span>, <span style=color:#d14>&#34;c&#34;</span>]
+</span></span><span style=display:flex><span>arr.prop <span style=color:#000;font-weight:700>=</span> <span style=color:#d14>&#34;property value&#34;</span>
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#000;font-weight:700>for</span> (<span style=color:#000;font-weight:700>let</span> index<span style=color:#000;font-weight:700>=</span><span style=color:#099>0</span>; index <span style=color:#000;font-weight:700>&lt;</span> arr.length; index<span style=color:#000;font-weight:700>++</span>) {
-</span></span><span style=display:flex><span>  <span style=color:#000;font-weight:700>const</span> elem <span style=color:#000;font-weight:700>=</span> arr[index];
-</span></span><span style=display:flex><span>  console.log(index, elem);
+</span></span><span style=display:flex><span><span style=color:#000;font-weight:700>for</span> (<span style=color:#000;font-weight:700>let</span> index <span style=color:#000;font-weight:700>=</span> <span style=color:#099>0</span>; index <span style=color:#000;font-weight:700>&lt;</span> arr.length; index<span style=color:#000;font-weight:700>++</span>) {
+</span></span><span style=display:flex><span>  <span style=color:#000;font-weight:700>const</span> elem <span style=color:#000;font-weight:700>=</span> arr[index]
+</span></span><span style=display:flex><span>  console.log(index, elem)
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#998;font-style:italic>// Output:
@@ -49,11 +49,11 @@ for-in
 for
 قدمت داره. حلقه‌ی زیر کلید‌های آرایه‌ی
 <em>arr</em>
-رو چاپ میکنه:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#000;font-weight:700>const</span> arr <span style=color:#000;font-weight:700>=</span> [<span style=color:#d14>&#39;a&#39;</span>, <span style=color:#d14>&#39;b&#39;</span>, <span style=color:#d14>&#39;c&#39;</span>];
-</span></span><span style=display:flex><span>arr.prop <span style=color:#000;font-weight:700>=</span> <span style=color:#d14>&#39;property value&#39;</span>;
+رو چاپ میکنه:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#000;font-weight:700>const</span> arr <span style=color:#000;font-weight:700>=</span> [<span style=color:#d14>&#34;a&#34;</span>, <span style=color:#d14>&#34;b&#34;</span>, <span style=color:#d14>&#34;c&#34;</span>]
+</span></span><span style=display:flex><span>arr.prop <span style=color:#000;font-weight:700>=</span> <span style=color:#d14>&#34;property value&#34;</span>
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#000;font-weight:700>for</span> (<span style=color:#000;font-weight:700>const</span> key <span style=color:#000;font-weight:700>in</span> arr) {
-</span></span><span style=display:flex><span>  console.log(key);
+</span></span><span style=display:flex><span>  console.log(key)
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#998;font-style:italic>// Output:
@@ -90,12 +90,12 @@ for-in
 انتخاب‌های خوبی برای حلقه‌زدن روی آرایه‌ها نیستن، یه متد کمکی در
 ECMAScript 5
 معرفی شد:
-()Array.prototype.forEach:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#000;font-weight:700>const</span> arr <span style=color:#000;font-weight:700>=</span> [<span style=color:#d14>&#39;a&#39;</span>, <span style=color:#d14>&#39;b&#39;</span>, <span style=color:#d14>&#39;c&#39;</span>];
-</span></span><span style=display:flex><span>arr.prop <span style=color:#000;font-weight:700>=</span> <span style=color:#d14>&#39;property value&#39;</span>;
+()Array.prototype.forEach:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#000;font-weight:700>const</span> arr <span style=color:#000;font-weight:700>=</span> [<span style=color:#d14>&#34;a&#34;</span>, <span style=color:#d14>&#34;b&#34;</span>, <span style=color:#d14>&#34;c&#34;</span>]
+</span></span><span style=display:flex><span>arr.prop <span style=color:#000;font-weight:700>=</span> <span style=color:#d14>&#34;property value&#34;</span>
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>arr.forEach((elem, index) =&gt; {
-</span></span><span style=display:flex><span>  console.log(elem, index);
-</span></span><span style=display:flex><span>});
+</span></span><span style=display:flex><span>  console.log(elem, index)
+</span></span><span style=display:flex><span>})
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#998;font-style:italic>// Output:
 </span></span></span><span style=display:flex><span><span style=color:#998;font-style:italic>// &#39;a&#39;, 0
@@ -122,26 +122,26 @@ callback
 یه مقدار
 truthy
 (یه مقداری که بشه به معنی true تفسیرش کرد)
-رو برگردونه، متوقف میشه.</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#000;font-weight:700>const</span> arr <span style=color:#000;font-weight:700>=</span> [<span style=color:#d14>&#39;red&#39;</span>, <span style=color:#d14>&#39;green&#39;</span>, <span style=color:#d14>&#39;blue&#39;</span>];
+رو برگردونه، متوقف میشه.</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#000;font-weight:700>const</span> arr <span style=color:#000;font-weight:700>=</span> [<span style=color:#d14>&#34;red&#34;</span>, <span style=color:#d14>&#34;green&#34;</span>, <span style=color:#d14>&#34;blue&#34;</span>]
 </span></span><span style=display:flex><span>arr.some((elem, index) =&gt; {
 </span></span><span style=display:flex><span>  <span style=color:#000;font-weight:700>if</span> (index <span style=color:#000;font-weight:700>&gt;=</span> <span style=color:#099>2</span>) {
-</span></span><span style=display:flex><span>    <span style=color:#000;font-weight:700>return</span> <span style=color:#000;font-weight:700>true</span>; <span style=color:#998;font-style:italic>// از حلقه خارج میشه
+</span></span><span style=display:flex><span>    <span style=color:#000;font-weight:700>return</span> <span style=color:#000;font-weight:700>true</span> <span style=color:#998;font-style:italic>// از حلقه خارج میشه
 </span></span></span><span style=display:flex><span><span style=color:#998;font-style:italic></span>  }
-</span></span><span style=display:flex><span>  console.log(elem);
+</span></span><span style=display:flex><span>  console.log(elem)
 </span></span><span style=display:flex><span>  <span style=color:#998;font-style:italic>// رو برمیگردونه undefined تابع به طور ضمنی مقدار
 </span></span></span><span style=display:flex><span><span style=color:#998;font-style:italic></span>  <span style=color:#998;font-style:italic>// هست حلقه ادامه پیدا میکنه falsy که چون یه مقدار
-</span></span></span><span style=display:flex><span><span style=color:#998;font-style:italic></span>});
+</span></span></span><span style=display:flex><span><span style=color:#998;font-style:italic></span>})
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#998;font-style:italic>// Output:
 </span></span></span><span style=display:flex><span><span style=color:#998;font-style:italic>// &#39;red&#39;
 </span></span></span><span style=display:flex><span><span style=color:#998;font-style:italic>// &#39;green&#39;
 </span></span></span></code></pre></div><h2 id=for-of-loop>۴ - حلقه‌ی for-of [جاوااسکریپت ES6] <a href=#for-of-loop class=anchor>🔗</a></h2><p>این حلقه در
 ECMAScript 6
-اضافه شد:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#000;font-weight:700>const</span> arr <span style=color:#000;font-weight:700>=</span> [<span style=color:#d14>&#39;a&#39;</span>, <span style=color:#d14>&#39;b&#39;</span>, <span style=color:#d14>&#39;c&#39;</span>];
-</span></span><span style=display:flex><span>arr.prop <span style=color:#000;font-weight:700>=</span> <span style=color:#d14>&#39;property value&#39;</span>;
+اضافه شد:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#000;font-weight:700>const</span> arr <span style=color:#000;font-weight:700>=</span> [<span style=color:#d14>&#34;a&#34;</span>, <span style=color:#d14>&#34;b&#34;</span>, <span style=color:#d14>&#34;c&#34;</span>]
+</span></span><span style=display:flex><span>arr.prop <span style=color:#000;font-weight:700>=</span> <span style=color:#d14>&#34;property value&#34;</span>
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#000;font-weight:700>for</span> (<span style=color:#000;font-weight:700>const</span> elem <span style=color:#000;font-weight:700>of</span> arr) {
-</span></span><span style=display:flex><span>  console.log(elem);
+</span></span><span style=display:flex><span>  console.log(elem)
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span><span style=color:#998;font-style:italic>// Output:
 </span></span></span><span style=display:flex><span><span style=color:#998;font-style:italic>// &#39;a&#39;
@@ -163,12 +163,9 @@ for-of
 اینه که با اون نه فقط روی آرایه‌ها بلکه روی آبجکت‌های
 iterable
 هم میشه حلقه زد - برای مثال، روی
-Mapها:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#000;font-weight:700>const</span> myMap <span style=color:#000;font-weight:700>=</span> <span style=color:#000;font-weight:700>new</span> Map()
-</span></span><span style=display:flex><span>  .set(<span style=color:#000;font-weight:700>false</span>, <span style=color:#d14>&#39;no&#39;</span>)
-</span></span><span style=display:flex><span>  .set(<span style=color:#000;font-weight:700>true</span>, <span style=color:#d14>&#39;yes&#39;</span>)
-</span></span><span style=display:flex><span>;
+Mapها:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#000;font-weight:700>const</span> myMap <span style=color:#000;font-weight:700>=</span> <span style=color:#000;font-weight:700>new</span> Map().set(<span style=color:#000;font-weight:700>false</span>, <span style=color:#d14>&#34;no&#34;</span>).set(<span style=color:#000;font-weight:700>true</span>, <span style=color:#d14>&#34;yes&#34;</span>)
 </span></span><span style=display:flex><span><span style=color:#000;font-weight:700>for</span> (<span style=color:#000;font-weight:700>const</span> [key, value] <span style=color:#000;font-weight:700>of</span> myMap) {
-</span></span><span style=display:flex><span>  console.log(key, value);
+</span></span><span style=display:flex><span>  console.log(key, value)
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#998;font-style:italic>// Output:
@@ -184,10 +181,10 @@ Mapها:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-mo
 ()keys.
 در آرایه‌ها، یه
 iterable
-روی اندیس‌های آرایه رو برمیگردونه:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#000;font-weight:700>const</span> arr <span style=color:#000;font-weight:700>=</span> [<span style=color:#d14>&#39;chocolate&#39;</span>, <span style=color:#d14>&#39;vanilla&#39;</span>, <span style=color:#d14>&#39;strawberry&#39;</span>];
+روی اندیس‌های آرایه رو برمیگردونه:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#000;font-weight:700>const</span> arr <span style=color:#000;font-weight:700>=</span> [<span style=color:#d14>&#34;chocolate&#34;</span>, <span style=color:#d14>&#34;vanilla&#34;</span>, <span style=color:#d14>&#34;strawberry&#34;</span>]
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#000;font-weight:700>for</span> (<span style=color:#000;font-weight:700>const</span> index <span style=color:#000;font-weight:700>of</span> arr.keys()) {
-</span></span><span style=display:flex><span>  console.log(index);
+</span></span><span style=display:flex><span>  console.log(index)
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span><span style=color:#998;font-style:italic>// Output:
 </span></span></span><span style=display:flex><span><span style=color:#998;font-style:italic>// 0
@@ -203,10 +200,10 @@ iterable
 for-of
 و
 destructuring
-خیلی راحت میتونیم روی مقادیر و اندیس‌های آرایه به طور همزمان حلقه بزنیم:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#000;font-weight:700>const</span> arr <span style=color:#000;font-weight:700>=</span> [<span style=color:#d14>&#39;chocolate&#39;</span>, <span style=color:#d14>&#39;vanilla&#39;</span>, <span style=color:#d14>&#39;strawberry&#39;</span>];
+خیلی راحت میتونیم روی مقادیر و اندیس‌های آرایه به طور همزمان حلقه بزنیم:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#000;font-weight:700>const</span> arr <span style=color:#000;font-weight:700>=</span> [<span style=color:#d14>&#34;chocolate&#34;</span>, <span style=color:#d14>&#34;vanilla&#34;</span>, <span style=color:#d14>&#34;strawberry&#34;</span>]
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#000;font-weight:700>for</span> (<span style=color:#000;font-weight:700>const</span> [index, value] <span style=color:#000;font-weight:700>of</span> arr.entries()) {
-</span></span><span style=display:flex><span>  console.log(index, value);
+</span></span><span style=display:flex><span>  console.log(index, value)
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span><span style=color:#998;font-style:italic>// Output:
 </span></span></span><span style=display:flex><span><span style=color:#998;font-style:italic>// 0, &#39;chocolate&#39;
