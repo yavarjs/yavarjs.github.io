@@ -1,6 +1,6 @@
 # Posts
 
-- [ ] Translate https://hamidreza.tech/using-special-symbols-inside-js-multiline-comments in Persian
+- [x] Translate https://hamidreza.tech/using-special-symbols-inside-js-multiline-comments in Persian
 - [x] Add this post: https://virgool.io/@mahdavipanah/typeof-null-vdgnyfdakrob
 
 # Project
