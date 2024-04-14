@@ -68,7 +68,7 @@ double
 <em>undefined</em>
 یا همون
 <em>JSVAL_VOID</em>
-هست یا نه. این بررسی با یه دستور برابر انجام میشه:</li></ul><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-C data-lang=C><span style=display:flex><span><span style=color:#999;font-weight:700;font-style:italic>#define JSVAL_IS_VOID(v)  ((v) == JSVAL_VOID)
+هست یا نه. این بررسی با یه دستور برابر انجام میشه:</li></ul><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-C data-lang=C><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f" id=hl-0-1><a style=outline:none;text-decoration:none;color:inherit href=#hl-0-1>1</a></span><span><span style=color:#999;font-weight:700;font-style:italic>#define JSVAL_IS_VOID(v)  ((v) == JSVAL_VOID)
 </span></span></span></code></pre></div><ul><li>بررسی بعدی (2) اینه که آیا مقدار مورد نظر، برچسب آبجکت داره یا نه. علاوه‌بر این اگه مقدار
 <strong>v</strong>
 قابل صدا‌زدنه یا به عبارتی
@@ -85,7 +85,7 @@ callable
 <em>null</em>
 وجود نداره، که میتونست خیلی راحت با یه ماکرو
 C
-انجام بشه:</li></ul><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-C data-lang=C><span style=display:flex><span><span style=color:#999;font-weight:700;font-style:italic>#define JSVAL_IS_NULL(v)  ((v) == JSVAL_NULL)
+انجام بشه:</li></ul><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-C data-lang=C><span style=display:flex><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f" id=hl-1-1><a style=outline:none;text-decoration:none;color:inherit href=#hl-1-1>1</a></span><span><span style=color:#999;font-weight:700;font-style:italic>#define JSVAL_IS_NULL(v)  ((v) == JSVAL_NULL)
 </span></span></span></code></pre></div><p>این باگ شاید خیلی واضح به نظر بیاد، اما نباید فراموش کرد که برای نوشتن اولین نسخه‌ی جاوااسکریپت زمان خیلی کمی در اختیارشون بوده!</p><hr><p>منبع:
 <a href=https://2ality.com/2013/10/typeof-null.html target=_blank rel=noopener>The history of typeof null</a>
 از وبلاگ
