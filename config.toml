@@ -1,5 +1,6 @@
 baseURL = "http://yavarjs.ir/"
 languageCode = "fa"
+DefaultContentLanguage = "fa"
 title = "یاvar"
 theme = "mini"
 
@@ -9,6 +10,12 @@ googleAnalytics = "G-TB5X9PJPXB"
 
 [taxonomies]
     tag = "tags"
+
+[languages]
+    [languages.fa]
+        languageName = "فارسی"
+        weight = "1"
+        languageDirection = "rtl"
 
 [params]
     description = " وبلاگی برای جاوااسکریپت و نود ‌جی‌اس"
@@ -21,6 +28,10 @@ googleAnalytics = "G-TB5X9PJPXB"
     newerPosts = "پست‌های جدیدتر"
     title404 = "۴۰۴ - صفحه پیدا نشد"
     subtitle404 = "چیزی که دنبالش می‌گردید به نظر نمیاد وجود داشته باشه."
+
+    showToc = true
+
+    customCSS = ["css/custom.css"]
 
     enableGoogleAnalytics = true
     enableComments = true
