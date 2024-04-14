@@ -23,12 +23,20 @@ jobs:
           hugo-version: "latest"
           # extended: true
 
+      - uses: actions/cache@v3
+        with:
+          path: /home/runner/.cache/hugo_cache # <-- with hugo version v0.116.0 and above
+          # path: /tmp/hugo_cache                 # <-- with hugo version < v0.116.0
+          key: ${{ runner.os }}-hugomod-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-hugomod-
+
       - name: Build
         run: hugo --minify
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/master'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
