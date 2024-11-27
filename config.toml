@@ -9,38 +9,38 @@ enableRobotsTXT = true
 googleAnalytics = "G-TB5X9PJPXB"
 
 [taxonomies]
-    tag = "tags"
+tag = "tags"
 
 [languages]
-    [languages.fa]
-        languageName = "فارسی"
-        weight = "1"
-        languageDirection = "rtl"
+[languages.fa]
+languageName = "فارسی"
+weight = "1"
+languageDirection = "rtl"
 
 [params]
-    description = "وبلاگی برای جاوااسکریپت، تایپ‌اسکریپت و نود ‌جی‌اس"
-    bio = "وبلاگی برای جاوااسکریپت، تایپ‌اسکریپت و نود ‌جی‌اس"
-    copyright = "مطالب با اشاره به یاvar به عنوان منبع قابل انتشارن."
-    home = "خانه"
-    tags = "برچسب‌ها"
-    about = "درباره یاvar"
-    olderPosts = "پست‌های قدیمی‌تر"
-    newerPosts = "پست‌های جدیدتر"
-    title404 = "۴۰۴ - صفحه پیدا نشد"
-    subtitle404 = "چیزی که دنبالش می‌گردید به نظر نمیاد وجود داشته باشه."
+description = "وبلاگی برای جاوااسکریپت، تایپ‌اسکریپت و نود ‌جی‌اس"
+bio = "وبلاگی برای جاوااسکریپت، تایپ‌اسکریپت و نود ‌جی‌اس"
+copyright = "مطالب با اشاره به یاvar به عنوان منبع قابل انتشارن."
+home = "خانه"
+tags = "برچسب‌ها"
+about = "درباره یاvar"
+olderPosts = "پست‌های قدیمی‌تر"
+newerPosts = "پست‌های جدیدتر"
+title404 = "۴۰۴ - صفحه پیدا نشد"
+subtitle404 = "چیزی که دنبالش می‌گردید به نظر نمیاد وجود داشته باشه."
 
-    showToc = true
+showToc = true
 
-    customCSS = ["css/custom.css"]
+customCSS = ["css/custom.css"]
 
-    enableGoogleAnalytics = true
-    enableComments = true
+enableGoogleAnalytics = true
+enableComments = true
 
-    env = "production"
+env = "production"
 
 [markup]
-    [markup.highlight]
-        style = "github"
-        lineNos = true
-        anchorLineNos = true
-        lineNumbersInTable = false
+[markup.highlight]
+style = "github"
+lineNos = true
+anchorLineNos = true
+lineNumbersInTable = false
