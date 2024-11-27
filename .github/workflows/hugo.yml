@@ -63,7 +63,6 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          cname: yavarjs.ir
           path: ./public
 
   # Deployment job
