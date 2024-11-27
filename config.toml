@@ -36,6 +36,8 @@ googleAnalytics = "G-TB5X9PJPXB"
     enableGoogleAnalytics = true
     enableComments = true
 
+    env = "production"
+
 [markup]
     [markup.highlight]
         style = "github"
