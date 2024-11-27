@@ -54,7 +54,6 @@ npm install -D @types/express
 ساخت فایل `AppFactory.ts` در پوشه `src`:
 
 ```typescript
-// فایل TypeScript
 import { ExpressAdapter } from "@nestjs/platform-express"
 import { NestFactory } from "@nestjs/core"
 import express, { Request, Response } from "express"
@@ -119,7 +118,7 @@ bootstrap()
 
 ```typescript
 /**
- * این فایل شیء Express را برای استقرار اپلیکیشن روی Vercel اکسپورت می‌کند.
+ * This file exports Express instance for specifically for the deployment of the app on Vercel.
  */
 
 import { AppFactory } from "../src/AppFactory.js"
